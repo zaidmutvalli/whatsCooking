@@ -1,15 +1,15 @@
-import './App.css'
-import NavBar from './navigation-bar'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import NavBar from './Components/navigation-bar';
+import AboutRestaurant from './pages/aboutRestraunt'; 
 
-function App() {
-
+export default function App() {
   return (
-
-    <>
-    <NavBar  />
-    </>
-    
-  )
+    <Router>
+      <NavBar />
+      <Routes>
+        <Route path='/' element={<h1>Home Page</h1>} />
+        <Route path='/about' element={<AboutRestaurant />} />
+      </Routes>
+    </Router>
+  );
 }
-
-export default App
