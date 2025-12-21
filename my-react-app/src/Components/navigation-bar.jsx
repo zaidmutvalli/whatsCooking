@@ -1,6 +1,6 @@
 import "../index.css";
 import "../styles/nav-bar.css";
-import "../styles/global.css";
+
 import {Link} from "react-router-dom";
 import chefImage from "../assets/chefLogo.webp";
 import { CgProfile } from "react-icons/cg";
