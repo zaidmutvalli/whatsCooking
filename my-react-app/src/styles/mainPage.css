@@ -1,0 +1,155 @@
+
+  
+  .logo {
+    height: 6em;
+    padding: 1.5em;
+    will-change: filter;
+    transition: filter 300ms;
+  }
+
+  .logo:hover {
+    filter: drop-shadow(0 0 2em #646cffaa);
+  }
+  .logo.react:hover {
+    filter: drop-shadow(0 0 2em #61dafbaa);
+  }
+  
+  @keyframes logo-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  @media (prefers-reduced-motion: no-preference) {
+    a:nth-of-type(2) .logo {
+      animation: logo-spin infinite 20s linear;
+    }
+  }
+  
+  .card {
+    padding: 2em;
+  }
+  
+  .read-the-docs {
+    color: #888;
+  }
+  
+  .restaurant-list {
+    display: flex;
+    flex-direction: row;     /* horizontal layout */
+    gap: 1rem;               /* space between cards */
+    overflow-x: auto;        /* horizontal scroll */
+    padding: 1rem;
+    white-space: nowrap;     /* prevent wrapping */
+    /* Add these */
+    flex-wrap: nowrap;       /* prevent wrapping */
+    scrollbar-width: thin;   /* optional for thin scrollbar in Firefox */
+  }
+  
+  .restaurant-card {
+    min-width: 200px;        /* ensures cards are wide enough to scroll */
+    flex: 0 0 auto;          /* prevent shrinking */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #ccc;
+    padding: 1rem;
+    border-radius: 8px;
+  }
+  
+  .restaurant-image {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  .restaurant-name {
+    font-size: 1.2rem;
+    margin: 0.5rem 0;
+  }
+  
+  .restaurant-rating {
+    font-size: 1rem;
+    color: #ffb400;
+  }
+  
+  .filters {
+    display: flex;             /* horizontal layout for buttons */
+    gap: 0.5rem;               /* spacing between buttons */
+    margin-bottom: 3rem;
+    justify-content: flex-start; /* align all buttons to the left */
+    margin-top: 2rem;
+  }
+  
+  .filter-button {
+    padding: 0.5rem 1rem;
+    color: darkblue;          /* button text blue */
+    cursor: pointer;
+  }
+  
+ 
+ 
+  .site-header {
+    display: flex;
+    align-items: center;       /* vertically center logo + text */
+    gap: 1rem;                 /* space between logo and text */
+    background-color: darkblue; /* blue background */
+    padding: 1rem 2rem;
+    color: white;
+  }
+  
+  .chef-logo {
+    width: 50px;               /* adjust size as needed */
+    height: 50px;
+    object-fit: contain;
+  }
+  
+ 
+
+
+  
+  a {
+    font-weight: 500;
+    color: #646cff;
+    text-decoration: inherit;
+  }
+  a:hover {
+    color: #535bf2;
+  }
+  
+
+
+  
+  button {
+    border-radius: 8px;
+    border: 1px solid transparent;
+    padding: 0.6em 1.2em;
+    font-size: 1em;
+    font-weight: 500;
+    font-family: inherit;
+    background-color: #1a1a1a;
+    cursor: pointer;
+    transition: border-color 0.25s;
+  }
+  button:hover {
+    border-color: #646cff;
+  }
+  button:focus,
+  button:focus-visible {
+    outline: 4px auto -webkit-focus-ring-color;
+  }
+  
+
+    a:hover {
+      color: #747bff;
+    }
+    button {
+      background-color: #f9f9f9;
+    }
+  
+  
+
