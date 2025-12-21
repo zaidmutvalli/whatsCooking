@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom'; // Assuming you use react-router-dom
 
 export default function SignUpPage() {
-  // 1. Create state to hold form data
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -12,7 +11,6 @@ export default function SignUpPage() {
 
   const navigate = useNavigate();
 
-  // 2. Handle input changes
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -20,9 +18,8 @@ export default function SignUpPage() {
     });
   };
 
-  // 3. Handle form submission
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevents the page from reloading
+    e.preventDefault();
 
     try {
       const response = await fetch("http://localhost/whatscooking/backend/signup.php", {
@@ -30,16 +27,16 @@ export default function SignUpPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData), // Send data as JSON string
+        body: JSON.stringify(formData),
       });
 
       const result = await response.json();
 
       if (result.status === "success") {
         alert("Registration Successful!");
-        navigate("/login"); // Use React Router to move to login page
+        navigate("/LoginPage"); 
       } else {
-        alert(result.message); // Shows "Passwords do not match" or "User exists"
+        alert(result.message); 
       }
     } catch (error) {
       console.error("Error:", error);
@@ -48,9 +45,9 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="sign-up"> {/* Changed 'class' to 'className' */}
+    <div className="sign-up">
       <h2>Sign Up</h2>
-      <form onSubmit={handleSubmit}> {/* Use onSubmit instead of action/method */}
+      <form onSubmit={handleSubmit}>
         <label className="form-label">Email: </label>
         <input 
           className="form-input" 
@@ -95,7 +92,7 @@ export default function SignUpPage() {
           onChange={handleChange}
         />
 
-        <p>Already a member? <Link className="website-link" to="/login">Log In here</Link></p>
+        <p>Already a member? <Link className="website-link" to="/LogInPage">Log In here</Link></p>
         
         <button type="submit">Sign Up</button>
       </form>
