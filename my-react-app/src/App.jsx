@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import NavBar from './Components/navigation-bar';
-import AboutRestaurant from './pages/aboutRestraunt'; 
+import NavBar from './Components/navigation-bar.jsx';
+import AboutRestaurant from './pages/AboutRestraunt.jsx'; 
 import MainPage from './pages/mainPage';
 
 
