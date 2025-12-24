@@ -32,12 +32,12 @@ export default function LogInPage() {
 
         if (result.status === "success") {
             alert("Log In Successful!");
-            navigate("/dashboard"); 
+            navigate("/");  
         } else {
             alert(result.message); 
         }
         } catch (error) {
-            alert("An error occurred. Is your PHP server running?");
+            alert("An error occurred. Please try again.");
         }
     }
 
@@ -69,7 +69,7 @@ export default function LogInPage() {
 
             <button type="submit">Log In</button>
         
-            <p><Link className="website-link" to="/forgot-password">Forgot Password?</Link></p>
+            <p><Link className="website-link" to="/forgotPassword">Forgot Password?</Link></p>
             <p>Are you new here? <Link className="website-link" to="/SignUpPage">Register here</Link></p>
         </form>
     </div>

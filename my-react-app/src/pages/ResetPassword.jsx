@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom'; 
+import { useNavigate, Link } from 'react-router-dom';
 
-export default function SignUpPage() {
+import { useSearchParams } from "react-router-dom";
+
+
+
+export default function ResetPassword() {
+
+  const [searchParams] = useSearchParams();
+  const token = searchParams.get("token");
+
   const [formData, setFormData] = useState({
-    username: '',
-    email: '',
     password: '',
     confirm: ''
   });
@@ -22,12 +28,13 @@ export default function SignUpPage() {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost/whatscooking/backend/signup.php", {
+      const response = await fetch("http://localhost/whatscooking/backend/reset_password.php", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ token, password: formData.password, confirm: formData.confirm })
+
       });
 
       const result = await response.json();
@@ -39,36 +46,15 @@ export default function SignUpPage() {
         alert(result.message); 
       }
     } catch (error) {
-      console.error("Error:", error);
-      alert("An error occurred. Please Try again.");
+      console.error("error:", error);
+      alert("An error occurred. Please try again.");
     }
   };
 
   return (
-    <div className="sign-up">
+    <div className="reset-password">
       <h2>Sign Up</h2>
       <form onSubmit={handleSubmit}>
-        <label className="form-label">Email: </label>
-        <input 
-          className="form-input" 
-          type="email" 
-          required 
-          name="email" 
-          placeholder="Email..." 
-          value={formData.email}
-          onChange={handleChange} 
-        />
-
-        <label className="form-label">Username: </label>
-        <input 
-          className="form-input" 
-          type="text" 
-          required 
-          name="username" 
-          placeholder="Username..." 
-          value={formData.username}
-          onChange={handleChange}
-        />
 
         <label className="form-label">Password: </label>
         <input 
@@ -81,19 +67,17 @@ export default function SignUpPage() {
           onChange={handleChange}
         />
 
-        <label className="form-label">Confirm Password: </label>
+        <label className="form-label">Password: </label>
         <input 
           className="form-input" 
           type="password" 
           required 
           name="confirm" 
-          placeholder="Renter Password..." 
+          placeholder="ReEnter Password..." 
           value={formData.confirm}
           onChange={handleChange}
         />
 
-        <p>Already a member? <Link className="website-link" to="/LogInPage">Log In here</Link></p>
-        
         <button type="submit">Sign Up</button>
       </form>
     </div>

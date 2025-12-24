@@ -3,6 +3,8 @@ import NavBar from './Components/navigation-bar';
 import AboutRestaurant from './pages/aboutRestraunt'; 
 import SignUpPage from './pages/SignUpPage';
 import LogInPage from './pages/LogInPage';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 
 export default function App() {
   return (
@@ -13,6 +15,8 @@ export default function App() {
         <Route path='/about' element={<AboutRestaurant />} />
         <Route path='/signUpPage' element={<SignUpPage />} />
         <Route path='/logInPage' element={<LogInPage />} />
+        <Route path='/forgotPassword' element={<ForgotPassword />} />
+        <Route path='/resetPassword' element={<ResetPassword />} />
 
       </Routes>
     </Router>
