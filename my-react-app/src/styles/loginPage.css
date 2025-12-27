@@ -1,0 +1,32 @@
+
+input{
+    width: 80%;
+    padding: 10px;
+    font-size: 16px;
+    flex: 1;
+    align-items: center;
+}
+
+input:focus{
+    border: 3px solid #555;
+}
+
+label{
+    text-align: left;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+    padding-left: 65px;
+    gap: 10px;
+}
+
+.wrapper{
+    width: 450px;
+    margin: auto;
+    text-align: center;
+    padding: 20px;
+    background-color: lightgrey;
+}
