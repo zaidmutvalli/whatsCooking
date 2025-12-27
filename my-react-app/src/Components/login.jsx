@@ -8,23 +8,20 @@ export default function login(){
     return (
         <div>
             <form onSubmit={handleSubmit}>
-                <label htmlFor="username">Username</label>
                 <input
                     name="username"
                     type="text" 
-                    placeholder=""
+                    placeholder="Username"
                 />
-                <label htmlFor="password">Password</label>
                 <input
                     name="password"
                     type="password" 
-                    placeholder="" 
+                    placeholder="Password" 
                 />
                 <button
                     type="submit"
-                    style={{width: '90px', padding: '10px 8px', fontSize: '16px', cursor: 'pointer'}}
                 >
-                    Sign In
+                    Log In
                 </button>
             </form>
 
