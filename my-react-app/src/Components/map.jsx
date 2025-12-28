@@ -6,7 +6,7 @@ import {APIProvider, Map ,} from '@vis.gl/react-google-maps';
 
 
 export default function DisplayMap({lat, lng}) {
-  const myAPIkey = process.env.REACT_APP_API_KEY
+  const myAPIkey = import.meta.env.VITE_REACT_APP_API_KEY
 
     
     return (
