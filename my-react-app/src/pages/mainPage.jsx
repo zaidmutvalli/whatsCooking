@@ -1,73 +1,98 @@
-
-import React from 'react';
+import { useEffect, useMemo, useState } from "react";
 import "../styles/mainPage.css";
-import NavBar from '../Components/navigation-bar';
-import Filters from '../Components/filters';
-import RestaurantList from "../Components/restrauntList"
-
-
-
-const restaurants = [//restaurants array for testing purposes
-    { name: "Restaurant 1", image: "https://via.placeholder.com/150", rating: "★ ★ ★ ★ ☆" },
-    { name: "Restaurant 2", image: "https://via.placeholder.com/150", rating: "★ ★ ★ ☆ ☆" },
-    { name: "Restaurant 3", image: "https://via.placeholder.com/150", rating: "★ ★ ★ ★ ★" },
-    { name: "Restaurant 4", image: "https://via.placeholder.com/150", rating: "★ ★ ☆ ☆ ☆" },
-    { name: "Restaurant 5", image: "https://via.placeholder.com/150", rating: "★ ★ ☆ ☆ ☆" },
-    { name: "Restaurant 6", image: "https://via.placeholder.com/150", rating: "★ ★ ☆ ☆ ☆" },
-    { name: "Restaurant 7", image: "https://via.placeholder.com/150", rating: "★ ★ ☆ ☆ ☆" },
-    { name: "Restaurant 8", image: "https://via.placeholder.com/150", rating: "★ ★ ☆ ☆ ☆" },
-    { name: "Restaurant 9", image: "https://via.placeholder.com/150", rating: "★ ★ ☆ ☆ ☆" },
-    
-  ]
-
-
-  const cafes = [
-  { name: "Cafe 1", image: "https://via.placeholder.com/150", rating: "★ ★ ★ ☆ ☆" },
-  { name: "Cafe 2", image: "https://via.placeholder.com/150", rating: "★ ★ ★ ★ ☆" },
-  { name: "Cafe 3", image: "https://via.placeholder.com/150", rating: "★ ★ ☆ ☆ ☆" },
-  { name: "Cafe 4", image: "https://via.placeholder.com/150", rating: "★ ★ ☆ ☆ ☆" },
-  { name: "Cafe 5", image: "https://via.placeholder.com/150", rating: "★ ★ ☆ ☆ ☆" },
-  { name: "Cafe 6", image: "https://via.placeholder.com/150", rating: "★ ★ ☆ ☆ ☆" },
-  { name: "Cafe 7", image: "https://via.placeholder.com/150", rating: "★ ★ ☆ ☆ ☆" },
-  { name: "Cafe 8", image: "https://via.placeholder.com/150", rating: "★ ★ ☆ ☆ ☆" },
-  { name: "Cafe 9", image: "https://via.placeholder.com/150", rating: "★ ★ ☆ ☆ ☆" },
-  ]
-
-
-
-
-
+import Filters from "../Components/filters";
+import RestaurantList from "../Components/restrauntList";
+import { fetchTrendingRestaurants, fetchTrendingCafes } from "../my-react-app%2Fsrc/api-restaurants";
 
 export default function MainPage() {
-    return (
-        <div>
-      <NavBar />
-      <Filters/>
-      <h2>Trending Restaurants </h2> 
-      <section className='restaurant-list'> 
-        
+  const [selectedFilter, setSelectedFilter] = useState("All");
+
+  const [restaurants, setRestaurants] = useState([]);
+  const [cafes, setCafes] = useState([]);
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    async function load() {
+      try {
+        setLoading(true);
+        setError("");
+
        
-        {restaurants.map((r, i) => ( //this maps any test restaurants in array to the RestaurantList
-        <RestaurantList
-        key = {i}
-        name = {r.name}
-        image = {r.image}
-        rating ={r.rating}
-        />
-        ))}
-    
-    </section>
-    <h2>Trending Cafes</h2>
-    <section className='restaurant-list'>
-        {cafes.map((c, i) => (
-          <RestaurantList
-          key = {i}
-          name = {c.name}
-          image={c.image}
-          rating={c.rating}
-          />
-        ))}
-    </section>
-    </div>        
-    );
+        const [restaurantsData, cafesData] = await Promise.all([
+          fetchTrendingRestaurants(),
+          fetchTrendingCafes(),
+        ]);
+
+        setRestaurants(restaurantsData);
+        setCafes(cafesData);
+      } catch (e) {
+        setError(e.message || "Something went wrong");
+
+       
+        setRestaurants([
+          { name: "Restaurant 1", image: "https://via.placeholder.com/150", rating: "★ ★ ★ ★ ☆" },
+        ]);
+        setCafes([
+          { name: "Cafe 1", image: "https://via.placeholder.com/150", rating: "★ ★ ★ ☆ ☆" },
+        ]);
+      } finally {
+        setLoading(false);
+      }
     }
+
+    load();
+  }, []);
+
+  const showRestaurants = useMemo(() => {
+    if (selectedFilter === "All" || selectedFilter === "Restaurants") return restaurants;
+    return [];
+  }, [selectedFilter, restaurants]);
+
+  const showCafes = useMemo(() => {
+    if (selectedFilter === "All" || selectedFilter === "Cafes") return cafes;
+    return [];
+  }, [selectedFilter, cafes]);
+
+  return (
+    <div>
+      <Filters onSelectFilter={setSelectedFilter} />
+
+      {loading && <p>Loading...</p>}
+      {error && <p style={{ marginTop: "10px" }}>Error: {error}</p>}
+
+      {!loading && (selectedFilter === "All" || selectedFilter === "Restaurants") && (
+        <>
+          <h2>Trending Restaurants</h2>
+          <section className="restaurant-list">
+            {showRestaurants.map((r, i) => (
+              <RestaurantList
+                key={`r-${i}`}
+                name={r.name}
+                image={r.image}
+                rating={r.rating}
+              />
+            ))}
+          </section>
+        </>
+      )}
+
+      {!loading && (selectedFilter === "All" || selectedFilter === "Cafes") && (
+        <>
+          <h2>Trending Cafes</h2>
+          <section className="restaurant-list">
+            {showCafes.map((c, i) => (
+              <RestaurantList
+                key={`c-${i}`}
+                name={c.name}
+                image={c.image}
+                rating={c.rating}
+              />
+            ))}
+          </section>
+        </>
+      )}
+    </div>
+  );
+}
