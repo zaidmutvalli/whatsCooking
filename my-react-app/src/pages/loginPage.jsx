@@ -41,8 +41,8 @@ export default function LogInPage() {
         }
     }
 
-    return (
-        <div className="log-in"> 
+  return (
+    <div className="log-in"> 
         <h2>Log In</h2>
         <form onSubmit={handleSubmit}>
             <label className="form-label">Username: </label>
@@ -72,7 +72,6 @@ export default function LogInPage() {
             <p><Link className="website-link" to="/forgotPassword">Forgot Password?</Link></p>
             <p>Are you new here? <Link className="website-link" to="/SignUpPage">Register here</Link></p>
         </form>
-        </div>
-    );
-
+    </div>
+  );
 }
