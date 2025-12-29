@@ -1,17 +1,17 @@
 import React from 'react';
 import NavigationBar from '../Components/navigation-bar';
-import RestaurantList from '../Components/restrauntList';
+
+import RestaurantList from '../Components/restrauntList'; 
 
 const MainPage = () => {
   return (
-    <div>
+    <div className="main-page">
       <NavigationBar />
       
-      <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-        <h1>Welcome to What's Cooking!</h1>
-        <p>Here are some places to eat nearby:</p>
+      <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
+        <h1>Nearby Restaurants</h1>
         
-        {/* This places the list on the screen */}
+        {/* This replaces the old "Restaurant 1, Restaurant 2" hardcoded cards */}
         <RestaurantList />
       </div>
     </div>

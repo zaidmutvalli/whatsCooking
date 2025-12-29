@@ -1,37 +1,48 @@
-
 const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 
-export const fetchRestaurants = async () => {
+export const fetchRestaurants = async (category = 'restaurant') => {
+  const searchUrl = 'https://places.googleapis.com/v1/places:searchNearby';
 
-  const url = 'https://places.googleapis.com/v1/places:searchNearby';
+
+  const typeMapping = {
+    'restaurant': ['restaurant'],
+    'cafe':       ['cafe', 'bakery', 'coffee_shop'],
+    'bar':        ['bar', 'pub', 'wine_bar'],
+    'breakfast':  ['bakery', 'cafe', 'restaurant'], 
+  };
+
+  const selectedTypes = typeMapping[category] || ['restaurant'];
 
   try {
-    const response = await fetch(url, {
+    const response = await fetch(searchUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'X-Goog-Api-Key': API_KEY,
-   
-        'X-Goog-FieldMask': 'places.displayName,places.formattedAddress,places.rating,places.priceLevel'
+        'X-Goog-FieldMask': 'places.displayName,places.formattedAddress,places.rating,places.priceLevel,places.photos'
       },
       body: JSON.stringify({
-        includedTypes: ['restaurant'],
-        maxResultCount: 20,
+        includedPrimaryTypes: selectedTypes,
+
+        excludedPrimaryTypes: [
+          'lodging', 'hotel', 'shopping_mall', 'department_store', 
+          'movie_theater', 'supermarket', 'gym', 'clothing_store'
+        ],
+
         locationRestriction: {
           circle: {
             center: { latitude: 53.4808, longitude: -2.2426 },
-            radius: 1500.0
+            radius: 1000.0
           }
         }
       })
     });
 
     const data = await response.json();
-    
-    return data.places || []; 
-    
+    return data.places || [];
+
   } catch (error) {
-    console.error("Oh no! Something went wrong:", error);
+    console.error("Error fetching places:", error);
     return [];
   }
 };
