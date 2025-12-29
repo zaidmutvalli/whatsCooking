@@ -42,9 +42,36 @@ export default function LogInPage() {
     }
 
     return (
-        <div className="wrapper">
-            <h2>Welcome Back!</h2>
-            <Login />
+        <div className="log-in"> 
+        <h2>Log In</h2>
+        <form onSubmit={handleSubmit}>
+            <label className="form-label">Username: </label>
+            <input 
+                className="form-input" 
+                type="text" 
+                name="username" 
+                required 
+                placeholder="Username..." 
+                value={formData.username}
+                onChange={handleChange}
+            />
+
+            <label className="form-label">Password: </label>
+            <input 
+                className="form-input" 
+                type="password" 
+                name="password" 
+                required 
+                placeholder="Enter Password..." 
+                value={formData.password}
+                onChange={handleChange}
+            />
+
+            <button type="submit">Log In</button>
+        
+            <p><Link className="website-link" to="/forgotPassword">Forgot Password?</Link></p>
+            <p>Are you new here? <Link className="website-link" to="/SignUpPage">Register here</Link></p>
+        </form>
         </div>
     );
 
