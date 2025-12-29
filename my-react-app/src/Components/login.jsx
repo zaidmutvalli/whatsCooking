@@ -23,6 +23,8 @@ export default function login(){
                 >
                     Log In
                 </button>
+                <hr color="grey" height="1px"></hr>
+                <a href="/signup" class="button">Create New Account</a>
             </form>
 
         </div>
