@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import "../styles/mainPage.css";
 import Filters from "../Components/filters";
 import RestaurantList from "../Components/restrauntList";
-import { fetchTrendingRestaurants, fetchTrendingCafes } from "../my-react-app/api";
 
 export default function MainPage() {
   const [selectedFilter, setSelectedFilter] = useState("All");
