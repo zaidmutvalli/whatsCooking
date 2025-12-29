@@ -11,7 +11,7 @@ export default function App() {
     <Router>
       <NavBar />
       <Routes>
-        <Route path='/' element={<h1>Home Page</h1>} />
+        <Route path='/' element={<MainPage />} />
         <Route path='/about' element={<AboutRestaurant />} />
         <Route path='/signUpPage' element={<SignUpPage />} />
         <Route path='/logInPage' element={<LogInPage />} />
