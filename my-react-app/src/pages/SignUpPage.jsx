@@ -1,101 +1,15 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom'; 
+import React from 'react';
+import SignUp from "../Components/signUp";
+
+import "../styles/signUpPage.css";
 
 export default function SignUpPage() {
-  const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: '',
-    confirm: ''
-  });
-
-  const navigate = useNavigate();
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await fetch("http://localhost/whatscooking/backend/signup.php", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const result = await response.json();
-
-      if (result.status === "success") {
-        alert("Registration Successful!");
-        navigate("/LoginPage"); 
-      } else {
-        alert(result.message); 
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      alert("An error occurred. Please Try again.");
-    }
-  };
 
   return (
-    <div className="sign-up">
+    <div id="wrapper">
       <h2>Sign Up</h2>
-      <form onSubmit={handleSubmit}>
-        <label className="form-label">Email: </label>
-        <input 
-          className="form-input" 
-          type="email" 
-          required 
-          name="email" 
-          placeholder="Email..." 
-          value={formData.email}
-          onChange={handleChange} 
-        />
-
-        <label className="form-label">Username: </label>
-        <input 
-          className="form-input" 
-          type="text" 
-          required 
-          name="username" 
-          placeholder="Username..." 
-          value={formData.username}
-          onChange={handleChange}
-        />
-
-        <label className="form-label">Password: </label>
-        <input 
-          className="form-input" 
-          type="password" 
-          required 
-          name="password" 
-          placeholder="Enter Password..." 
-          value={formData.password}
-          onChange={handleChange}
-        />
-
-        <label className="form-label">Confirm Password: </label>
-        <input 
-          className="form-input" 
-          type="password" 
-          required 
-          name="confirm" 
-          placeholder="Renter Password..." 
-          value={formData.confirm}
-          onChange={handleChange}
-        />
-
-        <p>Already a member? <Link className="website-link" to="/LogInPage">Log In here</Link></p>
-        
-        <button type="submit">Sign Up</button>
-      </form>
+      <SignUp />
+    
     </div>
   );
 }
