@@ -1,11 +1,39 @@
-import React from 'react';
+import React, { useLayoutEffect } from 'react';
 import AboutRestaurantCard, {Location} from '../Components/aboutRestraunt';
 import DisplayMap from "../Components/map"
 
 import "../styles/map.css";
 import "../styles/aboutRestrauntCard.css";
+import { useLocation } from 'react-router-dom';
+
+
+
+const restrauntInfo=()=>{
+
+  const {state} = useLocation();
+  const place = state?.place;
+  console.log(place);
+
+  if (!place) {
+    return (
+    <>
+    <p>No restaurant data available.</p>
+    
+    
+    </>);
+   
+    
+  }
+
+
+
+}
+
+
 
 export default function AboutRestaurant() {
+
+  
   
   return (
     <>

@@ -1,5 +1,16 @@
 import { useEffect, useState } from 'react';
 import { fetchRestaurants } from '../restaurantService';
+import { useNavigate } from 'react-router-dom';
+
+
+//Create a variable to store the navigate function
+const navigate=useNavigate();
+
+//arrow function to handle card click and send to about page based on the card click
+const handleCardClick = (place) => {
+  navigate('/about', { state: { place } });
+
+};
 
 const RestaurantList = () => {
   const [restaurants, setRestaurants] = useState([]);
@@ -15,6 +26,7 @@ const RestaurantList = () => {
   const loadData = async (category) => {
     setLoading(true);
     const data = await fetchRestaurants(category);
+    console.log(data);
     setRestaurants(data);
     setLoading(false);
   };
@@ -69,8 +81,10 @@ const RestaurantList = () => {
         <p>Loading places...</p>
       ) : (
         <div style={styles.gridContainer}>
+          
           {restaurants.map((place, index) => (
-            <div key={index} style={styles.card}>
+            <div key={index} style={styles.card} onClick={()=> handleCardClick(place)}>
+
               <div style={styles.imageContainer}>
                   <img 
                     src={getPhotoUrl(place)} 
