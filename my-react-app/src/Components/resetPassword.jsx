@@ -64,7 +64,7 @@ export default function resetPassword(){
                     name="confirm_password"
                     type="password" 
                     required 
-                    placeholder="Re-enter new Password" 
+                    placeholder="Re-enter new password" 
                     value={formData.confirm}
                     onChange={handleChange}
                 />

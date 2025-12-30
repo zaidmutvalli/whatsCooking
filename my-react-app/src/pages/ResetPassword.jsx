@@ -1,14 +1,14 @@
 import React from 'react';
-import resetPassword from '../Components/resetPassword';
+import ResetPassword from '../Components/resetPassword';
 
 import "../styles/resetPassword.css";
 
-export default function ResetPassword() {
+export default function ResetPasswordPage() {
 
   return (
     <div id="wrapper">
       <h2>Recover Your Password</h2>
-      <resetPassword />
+      <ResetPassword />
     </div>
   );
 

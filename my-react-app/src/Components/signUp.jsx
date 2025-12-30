@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom'; 
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; 
 
 export default function SignUp(){
 
@@ -24,21 +24,21 @@ export default function SignUp(){
 
         try {
             const response = await fetch("http://localhost/whatscooking/backend/signup.php", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-    });
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+            });
 
-    const result = await response.json();
+            const result = await response.json();
 
-    if (result.status === "success") {
-            alert("Registration Successful!");
-            navigate("/LoginPage"); 
-        } else {
-            alert(result.message); 
-        }
+            if (result.status === "success") {
+                alert("Registration Successful!");
+                navigate("/logIn"); 
+            } else {
+                alert(result.message); 
+            }
         } catch (error) {
             console.error("Error:", error);
             alert("An error occurred. Please Try again.");
@@ -76,10 +76,10 @@ export default function SignUp(){
                 />
 
                 <input 
-                    name="confirm_password"
+                    name="confirm"
                     type="password" 
                     required 
-                    placeholder="Confirm Password" 
+                    placeholder="Re-enter Password" 
                     value={formData.confirm}
                     onChange={handleChange}
                 />

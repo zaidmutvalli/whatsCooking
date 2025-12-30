@@ -70,7 +70,6 @@ export default function login(){
                 <hr></hr>
                 <a href="/signup" class="button">Create New Account</a>
             </form>
-
         </div>
     );
 }
