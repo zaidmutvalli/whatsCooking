@@ -1,17 +1,28 @@
 import { useEffect, useState } from 'react';
 import { fetchRestaurants } from '../restaurantService';
+import '../styles/RestaurantList.css'; 
 
 const RestaurantList = () => {
+  // State to hold the list of places from the API
   const [restaurants, setRestaurants] = useState([]);
+  
+  // State to track which filter is currently active (default: 'restaurant')
   const [activeFilter, setActiveFilter] = useState('restaurant');
+  
+  // Loading state to show feedback while data is fetching
   const [loading, setLoading] = useState(false);
   
   const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
 
+  // Initial load: Fetch restaurants when the component first mounts
   useEffect(() => {
     loadData(activeFilter);
   }, []);
 
+  /**
+   * Fetches data from the Google Places API based on the selected category.
+   * @param {string} category - The type of place to search for (e.g., 'cafe', 'bar')
+   */
   const loadData = async (category) => {
     setLoading(true);
     const data = await fetchRestaurants(category);
@@ -19,20 +30,27 @@ const RestaurantList = () => {
     setLoading(false);
   };
 
+  /**
+   * Handles the filter button click.
+   * Prevents re-fetching if the user clicks the already active filter.
+   */
   const handleFilterClick = (category) => {
     if (category === activeFilter) return;
     setActiveFilter(category);
     loadData(category);
   };
 
+  // Helper to construct the photo URL using the Google Places Media API
   const getPhotoUrl = (place) => {
     if (place.photos && place.photos.length > 0) {
         const photoRef = place.photos[0].name;
         return `https://places.googleapis.com/v1/${photoRef}/media?key=${apiKey}&maxHeightPx=400&maxWidthPx=400`;
     }
+    // Fallback image if no photo exists
     return "https://via.placeholder.com/300x400?text=No+Image";
   };
 
+  // Helper to convert price levels (e.g., "PRICE_LEVEL_MODERATE") into symbols (££)
   const formatPrice = (priceLevel) => {
       switch (priceLevel) {
           case 'PRICE_LEVEL_INEXPENSIVE': return '£';
@@ -44,20 +62,16 @@ const RestaurantList = () => {
   };
 
   return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px' }}>
-
-      <div style={styles.filterSection}>
-        <div style={styles.filterRow}>
+    <div className="restaurant-list-container">
+      
+      {/* FILTER SECTION: Buttons to switch between categories */}
+      <div className="filter-section">
+        <div className="filter-row">
           {['Restaurant', 'Cafe', 'Bar', 'Breakfast'].map((type) => (
             <button 
               key={type}
               onClick={() => handleFilterClick(type.toLowerCase())}
-              style={{
-                ...styles.filterButton,
-                color: activeFilter === type.toLowerCase() ? '#0e103c' : '#888',
-                fontWeight: activeFilter === type.toLowerCase() ? 'bold' : 'normal',
-                borderBottom: activeFilter === type.toLowerCase() ? '2px solid #0e103c' : 'none'
-              }}
+              className={`filter-btn ${activeFilter === type.toLowerCase() ? 'active' : ''}`}
             >
               {type}s
             </button>
@@ -65,27 +79,34 @@ const RestaurantList = () => {
         </div>
       </div>
 
+      {/* LIST CONTENT: Displays the grid of cards */}
       {loading ? (
-        <p>Loading places...</p>
+        <p>Loading amazing places...</p>
       ) : (
-        <div style={styles.gridContainer}>
+        <div className="grid-container">
           {restaurants.map((place, index) => (
-            <div key={index} style={styles.card}>
-              <div style={styles.imageContainer}>
+            <div key={index} className="place-card">
+              
+              {/* Image Section */}
+              <div className="image-container">
                   <img 
                     src={getPhotoUrl(place)} 
                     alt={place.displayName?.text} 
-                    style={styles.image}
+                    className="card-image"
                     onError={(e) => {e.target.onerror = null; e.target.src="https://via.placeholder.com/300x400"}}
                   />
               </div>
-              <div style={styles.cardContent}>
-                <h3 style={styles.placeName}>{place.displayName?.text}</h3>
-                <div style={styles.statsRow}>
-                  <span style={styles.statItem}>⭐ {place.rating}</span>
-                  <span style={{...styles.statItem, color: '#27ae60'}}>{formatPrice(place.priceLevel)}</span>
+
+              {/* Info Section */}
+              <div className="card-content">
+                <h3 className="place-name">{place.displayName?.text}</h3>
+                
+                <div className="stats-row">
+                  <span className="stat-item">⭐ {place.rating}</span>
+                  <span className="stat-item price-text">{formatPrice(place.priceLevel)}</span>
                 </div>
-                <p style={{fontSize: '12px', color: '#777', margin: '5px 0 0 0'}}>{place.formattedAddress}</p>
+                
+                <p className="address-text">{place.formattedAddress}</p>
               </div>
             </div>
           ))}
@@ -93,32 +114,6 @@ const RestaurantList = () => {
       )}
     </div>
   );
-};
-
-const styles = {
-  gridContainer: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
-    gap: '25px',
-    padding: '20px 0',
-  },
-  card: {
-    backgroundColor: 'white',
-    borderRadius: '12px',
-    overflow: 'hidden',
-    boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
-    transition: 'transform 0.2s',
-  },
-  imageContainer: { width: '100%', height: '180px', backgroundColor: '#f0f0f0' },
-  image: { width: '100%', height: '100%', objectFit: 'cover' },
-  cardContent: { padding: '15px' },
-  placeName: { fontSize: '1.1rem', fontWeight: 'bold', margin: '0 0 8px 0', color: '#333' },
-  statsRow: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' },
-  statItem: { fontWeight: 'bold' },
-  
-  filterSection: { marginBottom: '30px' },
-  filterRow: { display: 'flex', gap: '20px', overflowX: 'auto', paddingBottom: '5px' },
-  filterButton: { background: 'none', border: 'none', fontSize: '18px', cursor: 'pointer', padding: '5px 0' },
 };
 
 export default RestaurantList;
