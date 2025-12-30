@@ -61,7 +61,7 @@ export default function resetPassword(){
                 />
 
                 <input 
-                    name="confirm_password"
+                    name="confirm"
                     type="password" 
                     required 
                     placeholder="Re-enter new password" 
