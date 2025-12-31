@@ -38,7 +38,7 @@ export default function resetPassword(){
 
         if (result.status === "success") {
             alert("Registration Successful!");
-            navigate("/LoginPage"); 
+            navigate("/Login"); 
         } else {
             alert(result.message); 
         }
@@ -61,7 +61,7 @@ export default function resetPassword(){
                 />
 
                 <input 
-                    name="confirm_password"
+                    name="confirm"
                     type="password" 
                     required 
                     placeholder="Re-enter new password" 

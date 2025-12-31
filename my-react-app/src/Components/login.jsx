@@ -68,7 +68,7 @@ export default function login(){
                 </button>
                 <a href="/forgotPassword">Forgot Password?</a>
                 <hr></hr>
-                <a href="/signup" class="button">Create New Account</a>
+                <a href="/signup" className="button">Create New Account</a>
             </form>
         </div>
     );
