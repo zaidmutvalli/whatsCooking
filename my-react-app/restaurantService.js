@@ -1,5 +1,5 @@
 
-const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
+const API_KEY = "AIzaSyA2X0sOogCnixLAXeKBgmMH3GfJs1l2YPI";
 
 export const fetchRestaurants = async () => {
   const url = 'https://places.googleapis.com/v1/places:searchNearby';

@@ -3,18 +3,25 @@ import { fetchRestaurants } from '../restaurantService';
 import { useNavigate } from 'react-router-dom';
 
 
+
+
 //Create a variable to store the navigate function
-const navigate=useNavigate();
+
 
 //arrow function to handle card click and send to about page based on the card click
-const handleCardClick = (place) => {
-  navigate('/about', { state: { place } });
 
-};
 import '../styles/RestaurantList.css'; 
 
 const RestaurantList = () => {
   // State to hold the list of places from the API
+  const navigate=useNavigate();
+
+  const handleCardClick = (place) => {
+    navigate('/about', { state: { place } })
+  
+  };
+
+
   const [restaurants, setRestaurants] = useState([]);
   
   // State to track which filter is currently active (default: 'restaurant')
@@ -23,7 +30,7 @@ const RestaurantList = () => {
   // Loading state to show feedback while data is fetching
   const [loading, setLoading] = useState(false);
   
-  const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
+  const apiKey = "AIzaSyA2X0sOogCnixLAXeKBgmMH3GfJs1l2YPI";
 
   // Initial load: Fetch restaurants when the component first mounts
   useEffect(() => {
@@ -62,6 +69,8 @@ const RestaurantList = () => {
     return "https://via.placeholder.com/300x400?text=No+Image";
   };
 
+ 
+
   // Helper to convert price levels (e.g., "PRICE_LEVEL_MODERATE") into symbols (££)
   const formatPrice = (priceLevel) => {
       switch (priceLevel) {
@@ -95,10 +104,10 @@ const RestaurantList = () => {
       {loading ? (
         <p>Loading amazing places...</p>
       ) : (
-        <div style={styles.gridContainer}>
+        <div className="gridContainer" >
           {restaurants.map((place, index) => (
-            <div key={index} style={styles.card}>
-              <div style={styles.imageContainer}>
+            <div key={index} className="card" onClick={()=>handleCardClick(place)}>
+              <div className="imageContainer">
                   <img 
                     src={getPhotoUrl(place)} 
                     alt={place.displayName?.text} 

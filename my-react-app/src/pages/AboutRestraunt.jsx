@@ -2,38 +2,38 @@ import React, { useLayoutEffect } from 'react';
 import AboutRestaurantCard, {Location} from '../Components/aboutRestraunt';
 import DisplayMap from "../Components/map"
 
+
 import "../styles/map.css";
 import "../styles/aboutRestrauntCard.css";
 import { useLocation } from 'react-router-dom';
 
 
 
-const restrauntInfo=()=>{
-
-  const {state} = useLocation();
-  const place = state?.place;
-  console.log(place);
-
-  if (!place) {
-    return (
-    <>
-    <p>No restaurant data available.</p>
-    
-    
-    </>);
-   
-    
-  }
+const apiKey = import.meta.env.VITE_GOOGLE_API_KEY
 
 
 
-}
+
+
 
 
 
 export default function AboutRestaurant() {
+  const {state}= useLocation();
+  const place=state?.place;
 
-  
+  console.log(place);
+
+  const getPhotoUrl = (place) => {
+    if (place.photos && place.photos.length > 0) {
+        const photoRef = place.photos[0].name;
+        return `https://places.googleapis.com/v1/${photoRef}/media?key=${apiKey}&maxHeightPx=400&maxWidthPx=400`;
+    }
+    // Fallback image if no photo exists
+    return "https://via.placeholder.com/300x400?text=No+Image";
+  };
+
+
   
   return (
     <>
@@ -42,9 +42,10 @@ export default function AboutRestaurant() {
 
       <AboutRestaurantCard 
   
-      resName={"La creme coffee"}
-      resDesc={"Delicious Bites offers a fusion of global flavors with a cozy ambiance. Our menu features a variety of dishes crafted from fresh, locally sourced ingredients. Whether you're craving a hearty meal or a light snack, we have something to satisfy every palate. Join us for an unforgettable dining experience!"}
-      resImage={"sampleImage"}
+      resName={place?.displayName?.text || "Unknown Name"}
+      resDesc={place?.editorialSummary?.text || "No description available."}
+      resImage = {getPhotoUrl(place)}
+
     />
 
    
@@ -58,11 +59,7 @@ export default function AboutRestaurant() {
       />
       </div>
       <Location
-       locPostCode={"m1 4nj"}
-       locAddressLine1={"123 Flavor St."} />
-
-    
-    
+       locAddressLine={place?.formattedAddress} />
     </div>
 
     </div>
