@@ -84,7 +84,7 @@ export default function SignUp(){
                     onChange={handleChange}
                 />
 
-                <p>Already a member? <a href="/login">Log In here</a></p>
+                <p>Already a member? <a href="/logIn">Log In here</a></p>
                 
                 <button type="submit">Sign Up</button>
             </form>
