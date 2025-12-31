@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 export default function login(){
     
@@ -67,6 +68,7 @@ export default function login(){
                 >
                     Log In
                 </button>
+                <ReCAPTCHA sitekey={import.meta.env.VITE_REACT_APP_RECAPTCHA_SITE_KEY}/>
                 <a href="/forgotPassword">Forgot Password?</a>
                 <hr></hr>
                 <a href="/signUp" className="button">Create New Account</a>
