@@ -6,8 +6,7 @@ import {APIProvider, Map ,} from '@vis.gl/react-google-maps';
 
 
 export default function DisplayMap({lat, lng}) {
-  const myAPIkey = import.meta.env.VITE_REACT_APP_API_KEY
-
+    const myAPIkey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || import.meta.env.VITE_GOOGLE_API_KEY;
     
     return (
       <APIProvider apiKey={myAPIkey} onLoad={()=>console.log("Google Maps API loaded")}>

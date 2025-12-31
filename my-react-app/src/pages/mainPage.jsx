@@ -2,7 +2,7 @@ import React from 'react';
 import NavigationBar from '../Components/navigation-bar';
 
 import RestaurantList from '../Components/restrauntList'; 
-
+console.log(import.meta.env.VITE_GOOGLE_MAPS_API_KEY);
 const MainPage = () => {
   return (
     <div className="main-page">
