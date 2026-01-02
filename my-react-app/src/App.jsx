@@ -1,17 +1,27 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import NavBar from './Components/navigation-bar';
-import AboutRestaurant from './pages/aboutRestraunt'; 
+import React from 'react';
 
-export default function App() {
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+
+
+import NavBar from "./Components/navigation-bar";
+import MainPage from "./pages/mainPage"; 
+
+import AboutRestaurant from "./pages/AboutRestraunt"; 
+
+function App() {
   return (
     <Router>
       <NavBar />
       <Routes>
-        <Route path='/' element={<MainPage />} />
-        <Route path='/about' element={<AboutRestaurant />} />
+        {/* This tells the app: When at '/', show MainPage */}
+        <Route path="/" element={<MainPage />} />
         
-
+        {/* This tells the app: When at '/about', show AboutRestaurant */}
+        <Route path="/about" element={<AboutRestaurant />} />
       </Routes>
     </Router>
   );
 }
+
+export default App;

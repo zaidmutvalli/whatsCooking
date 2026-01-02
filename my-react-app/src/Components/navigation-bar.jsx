@@ -18,7 +18,6 @@ function NavBar(){
                 <li>Places</li>
                 <li>Social</li>
                 <li>Trending</li>
-              <li> <Link to="/about"> About</Link> </li>
             </ul>
             <div className="profile">
                 <icon><CgProfile /></icon>
