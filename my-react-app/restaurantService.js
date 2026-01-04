@@ -11,7 +11,7 @@ export const fetchRestaurants = async () => {
         'Content-Type': 'application/json',
         'X-Goog-Api-Key': API_KEY,
         // We list exactly what we want: Name, Address, Rating, Price
-        'X-Goog-FieldMask': 'places.displayName,places.formattedAddress,places.rating,places.priceLevel'
+        'X-Goog-FieldMask': 'places.displayName,places.formattedAddress,places.rating,places.priceLevel,places.editorialSummary'
       },
       body: JSON.stringify({
         includedTypes: ['restaurant'],
