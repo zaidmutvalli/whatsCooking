@@ -6,7 +6,7 @@ import chefImage from "../assets/chefLogo.webp";
 import { CgProfile } from "react-icons/cg";
 
 function NavBar(){
-
+ /* Chen to do: Add an onclick to JoshA_380 to navigate to the page user settings*/ 
     return(
         <nav className="navBar">
             <div className="leftSection">
@@ -21,7 +21,7 @@ function NavBar(){
             </ul>
             <div className="profile">
                 <icon><CgProfile /></icon>
-                <p>JoshA_380</p>
+                <p>JoshA_380</p>   
             </div>
             </div>
         </nav>
