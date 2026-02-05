@@ -56,6 +56,10 @@ export default function AboutRestaurant() {
 
       <div className='mapSection'>
       <DisplayMap
+          lat={place?.location?.latitude ?? 0}
+          lng={place?.location?.longitude ?? 0}
+
+      
       />
       </div>
       <Location
