@@ -16,7 +16,6 @@ function App() {
       <Routes>
         {/* This tells the app: When at '/', show MainPage */}
         <Route path="/" element={<MainPage />} />
-        
         {/* This tells the app: When at '/about', show AboutRestaurant */}
         <Route path="/about" element={<AboutRestaurant />} />
       </Routes>
