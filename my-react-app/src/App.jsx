@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import NavBar from "./Components/navigation-bar";
 import MainPage from "./pages/mainPage"; 
-
+import AddReview from './pages/addReview';
 import AboutRestaurant from "./pages/AboutRestraunt"; 
 
 function App() {
@@ -14,10 +14,11 @@ function App() {
     <Router>
       <NavBar />
       <Routes>
-        {/* This tells the app: When at '/', show MainPage */}
         <Route path="/" element={<MainPage />} />
-        {/* This tells the app: When at '/about', show AboutRestaurant */}
         <Route path="/about" element={<AboutRestaurant />} />
+        <Route path="/addReview" element={<AddReview/>} />
+
+        <></>
       </Routes>
     </Router>
   );

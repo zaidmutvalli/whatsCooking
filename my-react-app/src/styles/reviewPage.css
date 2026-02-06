@@ -1,0 +1,143 @@
+.largeText{
+    font-size: 50px;
+    font-weight:450;
+
+}
+
+
+.largeResImage{
+    width: 150px !important;
+    height: 150px !important;
+
+}
+
+.leftSide{
+    width: 20%;
+    margin: 30px;
+}
+
+.horizontalLine {
+    width: 1px;
+    height: 600px;
+    background-color: #000;
+    border-top: 400px;
+    margin: 0;
+    opacity: 0.5;
+}
+
+
+.addReviewContainer {
+    display: flex;
+    align-items: flex-start; /* Align children to top */
+}
+
+.rightSide {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+}
+
+
+
+
+.Question{
+    font-size: 30px;
+    font-weight: 10;
+}
+
+.rating {
+    display: flex;
+    gap: 12px;
+  }
+  
+  .radioChoice {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Hide native radio but keep accessibility */
+  .radioChoice input {
+    position: absolute;
+    opacity: 0;
+  }
+  
+  .customRadio {
+    width: 30px;
+    height: 30px;
+    border: 6px solid rgb(31, 132, 31);
+    border-radius: 50%;
+    position: relative;
+  }
+  
+
+  .customRadio::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: transparent;
+    border-radius: 50%;
+    transition: background 0.2s ease;
+  }
+  
+
+  .customRadio[data-active="true"]::after {
+    background: rgb(31, 132, 31);
+  }
+
+  .TitleInput {
+    width: 280px;
+    padding: 12px 14px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    display: flex;
+
+  }
+  
+  .TitleInput:focus, .TextInput:focus {
+    border-color: rgb(31, 132, 31);
+    box-shadow: 0 0 0 3px rgba(31, 132, 31, 0.2);
+  }
+
+
+  .TextInput{
+    width: 780px;
+    height: 150px;
+    padding: 12px 14px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    display: flex;
+    text-align: top;
+    margin-bottom: 30px;
+  }
+
+  form {
+    display: contents;
+  }
+
+
+
+    
+.ReviewSubmitButton{
+  padding: 12px 24px;             /* comfortable size */
+  font-size: 16px;                /* readable text */
+  font-weight: 600;               /* bold enough */
+  color: #fff;                     /* text color */
+  background-color: rgb(31, 132, 31); /* green button */
+  border: none;                   /* remove default border */
+  border-radius: 8px;             /* rounded corners */
+  cursor: pointer;                /* pointer on hover */
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+
+.ReviewSubmitButton:hover{
+  background-color: rgb(25, 105, 25);
+  transform: translateY(-1px);
+}
