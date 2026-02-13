@@ -23,6 +23,11 @@ dist-ssr
 *.sln
 *.sw?
 
+<<<<<<< HEAD
 
 #to hide API key
 .env
+=======
+.env
+*.json
+>>>>>>> remotes/origin/signup_page_combine_branches

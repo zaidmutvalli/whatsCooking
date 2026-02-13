@@ -21,7 +21,7 @@ function NavBar(){
             </ul>
             <div className="profile">
                 <icon><CgProfile /></icon>
-                <p>JoshA_380</p>
+                <Link to='/logIn'>Sign In </Link>
             </div>
             </div>
         </nav>
