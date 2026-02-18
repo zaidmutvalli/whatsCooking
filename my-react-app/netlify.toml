@@ -7,7 +7,7 @@
 
   # The directory that contains the deploy-ready HTML/assets
   # Change this from "build" to "dist"
-  publish = "my-react-app/dist"
+  publish = "dist"
 
 [[redirects]]
   from = "/*"
