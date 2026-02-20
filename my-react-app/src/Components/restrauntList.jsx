@@ -19,28 +19,33 @@ const RestaurantList = () => {
 
   // STEP 1: Get location when the component first mounts
   useEffect(() => {
+  const getInitialData = () => {
+    setLoading(true); // Start loading immediately
+    
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const coords = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          };
-          setUserCoords(coords);
-          // Load data using the fresh coordinates
-          loadData(activeFilter, coords.lat, coords.lng);
+        async (position) => {
+          const { latitude, longitude } = position.coords;
+          setUserCoords({ lat: latitude, lng: longitude });
+          
+          // FETCH IMMEDIATELY once we have coords
+          await loadData(activeFilter, latitude, longitude);
         },
-        (error) => {
-          console.error("Location denied, using fallback", error);
-          // FALLBACK: Manchester coordinates if user says no
-          loadData(activeFilter, 53.4808, -2.2426);
+        async (error) => {
+          console.error("Location denied, using fallback");
+          const fallbackLat = 53.4808;
+          const fallbackLng = -2.2426;
+          setUserCoords({ lat: fallbackLat, lng: fallbackLng });
+          await loadData(activeFilter, fallbackLat, fallbackLng);
         }
       );
     } else {
-      // Fallback for old browsers
       loadData(activeFilter, 53.4808, -2.2426);
     }
-  }, []);
+  };
+
+  getInitialData();
+}, []); // Empty dependency array means this only runs once on mount
 
   // STEP 2: Update loadData to accept lat/lng
   const loadData = async (category, lat, lng) => {
