@@ -8,6 +8,8 @@ const RestaurantList = () => {
   const [restaurants, setRestaurants] = useState([]);
   const [activeFilter, setActiveFilter] = useState('restaurant');
   const [loading, setLoading] = useState(false);
+  // Add a state to store user location
+  const [userCoords, setUserCoords] = useState(null);
 
   const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || import.meta.env.VITE_GOOGLE_API_KEY;
 
@@ -15,13 +17,39 @@ const RestaurantList = () => {
     navigate('/about', { state: { place } });
   };
 
+  // STEP 1: Get location when the component first mounts
   useEffect(() => {
-    loadData(activeFilter);
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const coords = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+          setUserCoords(coords);
+          // Load data using the fresh coordinates
+          loadData(activeFilter, coords.lat, coords.lng);
+        },
+        (error) => {
+          console.error("Location denied, using fallback", error);
+          // FALLBACK: Manchester coordinates if user says no
+          loadData(activeFilter, 53.4808, -2.2426);
+        }
+      );
+    } else {
+      // Fallback for old browsers
+      loadData(activeFilter, 53.4808, -2.2426);
+    }
   }, []);
 
-  const loadData = async (category) => {
+  // STEP 2: Update loadData to accept lat/lng
+  const loadData = async (category, lat, lng) => {
     setLoading(true);
-    const data = await fetchRestaurants(category);
+    // Use coordinates if they exist, otherwise use fallback
+    const latitude = lat || userCoords?.lat || 53.4808;
+    const longitude = lng || userCoords?.lng || -2.2426;
+    
+    const data = await fetchRestaurants(category, latitude, longitude);
     setRestaurants(data);
     setLoading(false);
   };
@@ -29,8 +57,11 @@ const RestaurantList = () => {
   const handleFilterClick = (category) => {
     if (category === activeFilter) return;
     setActiveFilter(category);
-    loadData(category);
+    // Use existing stored coords when switching filters
+    loadData(category, userCoords?.lat, userCoords?.lng);
   };
+
+  // ... (keep getPhotoUrl and formatPrice the same)
 
   const getPhotoUrl = (place) => {
     if (place.photos && place.photos.length > 0) {
@@ -70,13 +101,12 @@ const RestaurantList = () => {
         <h2 className="row-title">Recommended {activeFilter}s Near You</h2>
         
         {loading ? (
-          <p className="loading-text">Loading...</p>
+          <p className="loading-text">Finding spots nearby... 📍</p>
         ) : (
           <div className="horizontal-scroll-row">
             {restaurants.map((place, index) => (
               <div key={index} className="restaurant-horizontal-card" onClick={() => handleCardClick(place)}>
                 <div className="img-wrapper">
-                  {/* We keep the IMG tag but add a class that we will FORCE to size in CSS */}
                   <img 
                     src={getPhotoUrl(place)} 
                     alt={place.displayName?.text} 

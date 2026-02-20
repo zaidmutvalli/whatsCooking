@@ -2,7 +2,7 @@ const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY ||
                 import.meta.env.VITE_GOOGLE_API_KEY || 
                 import.meta.env.VITE_REACT_APP_API_KEY;
 
-export const fetchRestaurants = async (category = 'restaurant') => {
+export const fetchRestaurants = async (category = 'restaurant', lat, lng) => {
   const searchUrl = 'https://places.googleapis.com/v1/places:searchNearby';
 
   const typeMapping = {
@@ -24,7 +24,6 @@ export const fetchRestaurants = async (category = 'restaurant') => {
       },
       body: JSON.stringify({
         includedPrimaryTypes: selectedTypes,
-
         excludedPrimaryTypes: [
           'lodging', 'hotel', 'shopping_mall', 'department_store', 
           'movie_theater', 'supermarket', 'gym', 'clothing_store'
@@ -32,7 +31,7 @@ export const fetchRestaurants = async (category = 'restaurant') => {
 
         locationRestriction: {
           circle: {
-            center: { latitude: 53.4808, longitude: -2.2426 },
+            center: { latitude: lat, longitude: lng },
             radius: 1000.0
           }
         }
