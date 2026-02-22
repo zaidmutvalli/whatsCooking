@@ -1,34 +1,40 @@
 .largeText{
-    font-size: 50px;
-    font-weight:450;
-
+    font-size: 28px;
+    font-weight: 450;
+    line-height: 1.3;
 }
 
-
 .largeResImage{
-    width: 150px !important;
-    height: 150px !important;
-
+    width: 180px !important;
+    height: 180px !important;
+    border-radius: 12px;
+    margin-top: 16px;
 }
 
 .leftSide{
-    width: 20%;
-    margin: 30px;
+    width: 260px;
+    min-width: 260px;
+    padding: 10px 20px 30px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .horizontalLine {
-    width: 1px;
-    height: 600px;
-    background-color: #000;
-    border-top: 400px;
-    margin: 0;
-    opacity: 0.5;
+    width: 0;
+    align-self: stretch;
+    border: none;
+    border-left: 1px solid #ccc;
+    margin: 0 10px;
+    flex-shrink: 0;
 }
-
 
 .addReviewContainer {
     display: flex;
-    align-items: flex-start; /* Align children to top */
+    align-items: flex-start;
+    padding-top: 70px;
+    min-height: calc(100vh - 70px);
+    padding-bottom: 40px;
 }
 
 .rightSide {
@@ -36,108 +42,110 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 20px;
+    padding: 10px 40px;
 }
 
-
-
-
 .Question{
-    font-size: 30px;
-    font-weight: 10;
+    font-size: 22px;
+    font-weight: 400;
+    margin: 6px 0 4px 0;
+    text-align: center;
 }
 
 .rating {
     display: flex;
     gap: 12px;
-  }
-  
-  .radioChoice {
+    margin-bottom: 6px;
+}
+
+.radioChoice {
     cursor: pointer;
     display: flex;
     align-items: center;
-  }
-  
-  /* Hide native radio but keep accessibility */
-  .radioChoice input {
+    position: relative;
+}
+
+/* Hide native radio but keep accessibility */
+.radioChoice input {
     position: absolute;
     opacity: 0;
-  }
-  
-  .customRadio {
-    width: 30px;
-    height: 30px;
-    border: 6px solid rgb(31, 132, 31);
+    width: 0;
+    height: 0;
+}
+
+.customRadio {
+    width: 32px;
+    height: 32px;
+    border: 4px solid rgb(31, 132, 31);
     border-radius: 50%;
     position: relative;
-  }
-  
+}
 
-  .customRadio::after {
+.customRadio::after {
     content: "";
     position: absolute;
     inset: 0;
     background: transparent;
     border-radius: 50%;
     transition: background 0.2s ease;
-  }
-  
-
-  .customRadio[data-active="true"]::after {
-    background: rgb(31, 132, 31);
-  }
-
-  .TitleInput {
-    width: 280px;
-    padding: 12px 14px;
-    font-size: 16px;
-    border: 2px solid #ccc;
-    border-radius: 8px;
-    outline: none;
-    display: flex;
-
-  }
-  
-  .TitleInput:focus, .TextInput:focus {
-    border-color: rgb(31, 132, 31);
-    box-shadow: 0 0 0 3px rgba(31, 132, 31, 0.2);
-  }
-
-
-  .TextInput{
-    width: 780px;
-    height: 150px;
-    padding: 12px 14px;
-    font-size: 16px;
-    border: 2px solid #ccc;
-    border-radius: 8px;
-    outline: none;
-    display: flex;
-    text-align: top;
-    margin-bottom: 30px;
-  }
-
-  form {
-    display: contents;
-  }
-
-
-
-    
-.ReviewSubmitButton{
-  padding: 12px 24px;             /* comfortable size */
-  font-size: 16px;                /* readable text */
-  font-weight: 600;               /* bold enough */
-  color: #fff;                     /* text color */
-  background-color: rgb(31, 132, 31); /* green button */
-  border: none;                   /* remove default border */
-  border-radius: 8px;             /* rounded corners */
-  cursor: pointer;                /* pointer on hover */
-  transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
+.customRadio[data-active="true"]::after {
+    background: rgb(31, 132, 31);
+}
+
+.TitleInput {
+    width: 100%;
+    max-width: 600px;
+    padding: 12px 14px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.TitleInput:focus, .TextInput:focus {
+    border-color: rgb(31, 132, 31);
+    box-shadow: 0 0 0 3px rgba(31, 132, 31, 0.2);
+}
+
+.TextInput{
+    width: 100%;
+    max-width: 600px;
+    height: 160px;
+    padding: 12px 14px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    box-sizing: border-box;
+    resize: vertical;
+    margin-bottom: 10px;
+}
+
+.reviewForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+}
+
+.ReviewSubmitButton{
+    padding: 12px 32px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    background-color: rgb(31, 132, 31);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    margin-top: 8px;
+}
 
 .ReviewSubmitButton:hover{
-  background-color: rgb(25, 105, 25);
-  transform: translateY(-1px);
+    background-color: rgb(25, 105, 25);
+    transform: translateY(-1px);
 }

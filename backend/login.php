@@ -1,6 +1,7 @@
 <?php
-
-$allowedOrigin = "http://localhost:5173";
+session_start();
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+$allowedOrigin = (preg_match('/^http:\/\/localhost:\d+$/', $origin)) ? $origin : '';
 
 header("Access-Control-Allow-Origin: $allowedOrigin");
 header("Access-Control-Allow-Credentials: true");
@@ -13,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 
-session_start();
+
 
 include "db.php";
 

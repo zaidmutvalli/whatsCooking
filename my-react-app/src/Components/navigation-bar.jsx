@@ -14,7 +14,7 @@ function NavBar(){
 
     useEffect(()=>{
 
-        fetch("http://localhost:8888/whatscooking/get_user_info.php",{
+        fetch("http://localhost:8888/get_user_info.php",{
             credentials:'include'
         })
 
@@ -40,7 +40,7 @@ function NavBar(){
                 <li>Trending</li>
             </ul>
             <div className="profile">
-                <icon><CgProfile /></icon>
+               <CgProfile />
                 {user ? <span>{user.username}</span> : <Link to='/logIn'>Sign In</Link>}
             </div>
             </div>

@@ -8,7 +8,7 @@ export default function AddReview() {
             <div className="leftSide">
                 <ReviewLeftSide />
             </div>
-            <hr className="horizontalLine" />
+            <div className="horizontalLine"></div>
             <div className="rightSide">
                 <RightSide />
 

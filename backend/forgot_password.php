@@ -1,6 +1,7 @@
 <?php
 
-$allowedOrigin = "http://localhost:5173";
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+$allowedOrigin = (preg_match('/^http:\/\/localhost:\d+$/', $origin)) ? $origin : '';
 
 header("Access-Control-Allow-Origin: $allowedOrigin");
 header("Access-Control-Allow-Credentials: true");
@@ -21,6 +22,7 @@ $email = $data['email'] ?? null;
 
 if (!$email) {
     echo json_encode(["status" => "error", "message" => "Enter a valid email address. "]);
+    exit;
 }
 
 $stmt = $con->prepare("SELECT id FROM users WHERE email = ?");

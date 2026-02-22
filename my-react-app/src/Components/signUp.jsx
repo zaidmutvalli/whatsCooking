@@ -27,7 +27,7 @@ export default function SignUp(){
         e.preventDefault();
 
         try {
-            const response = await fetch("http://localhost:8888/whatscooking/signup.php", {
+            const response = await fetch("http://localhost:8888/signup.php", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
