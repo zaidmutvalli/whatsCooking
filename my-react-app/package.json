@@ -14,8 +14,14 @@
     "@vis.gl/react-google-maps": "^1.7.1",
     "dotenv": "^17.2.3",
     "leaflet": "^1.9.4",
+<<<<<<< HEAD
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+=======
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "react-google-recaptcha": "^3.1.0",
+>>>>>>> remotes/origin/signup_page_combine_branches
     "react-icons": "^5.5.0",
     "react-leaflet": "^5.0.0",
     "react-router-dom": "^7.10.1"
@@ -29,6 +35,6 @@
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
-    "vite": "^7.2.4"
+    "vite": "^7.3.0"
   }
 }
