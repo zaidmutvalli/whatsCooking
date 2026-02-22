@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 
+// Sign up form component — handles new user registration via the backend API
 export default function SignUp(){
 
+    // Form state for all registration fields including password confirmation
     const [formData, setFormData] = useState({
         username: '',
         email: '',
@@ -12,6 +14,7 @@ export default function SignUp(){
 
     const navigate = useNavigate();
 
+    // Updates form state when any input field changes
     const handleChange = (e) => {
         setFormData({
             ...formData,
@@ -19,11 +22,12 @@ export default function SignUp(){
         });
     };
 
+    // Submits registration data to the signup endpoint and redirects to login on success
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            const response = await fetch("http://localhost/whatscooking/backend/signup.php", {
+            const response = await fetch("http://localhost:8888/whatscooking/signup.php", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -35,9 +39,9 @@ export default function SignUp(){
 
             if (result.status === "success") {
                 alert("Registration Successful!");
-                navigate("/logIn"); 
+                navigate("/logIn"); // Redirect to login after successful registration
             } else {
-                alert(result.message); 
+                alert(result.message); // Show server-provided error message
             }
         } catch (error) {
             console.error("Error:", error);
@@ -48,44 +52,45 @@ export default function SignUp(){
     return (
         <div>
             <form onSubmit={handleSubmit}>
-                <input 
+                <input
                     name="username"
-                    type="text" 
+                    type="text"
                     required
                     placeholder="Username"
                     value={formData.username}
                     onChange={handleChange}
                 />
 
-                <input 
-                    name="email" 
-                    type="email" 
-                    required 
-                    placeholder="Email Address" 
+                <input
+                    name="email"
+                    type="email"
+                    required
+                    placeholder="Email Address"
                     value={formData.email}
-                    onChange={handleChange} 
+                    onChange={handleChange}
                 />
 
-                <input 
+                <input
                     name="password"
                     type="password"
-                    required 
-                    placeholder="Password" 
+                    required
+                    placeholder="Password"
                     value={formData.password}
                     onChange={handleChange}
                 />
 
-                <input 
+                {/* Confirmation field to catch password typos before submission */}
+                <input
                     name="confirm"
-                    type="password" 
-                    required 
-                    placeholder="Re-enter Password" 
+                    type="password"
+                    required
+                    placeholder="Re-enter Password"
                     value={formData.confirm}
                     onChange={handleChange}
                 />
 
                 <p>Already a member? <a href="/logIn">Log In here</a></p>
-                
+
                 <button type="submit">Sign Up</button>
             </form>
         </div>

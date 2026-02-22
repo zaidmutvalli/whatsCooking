@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ReCAPTCHA from 'react-google-recaptcha';
 
+// Login form component — handles user authentication via the backend API
 export default function login(){
-    
+
+    // Form state for controlled inputs
     const [formData, setFormData] = useState({
         username: '',
         password: ''
@@ -11,6 +13,7 @@ export default function login(){
 
     const navigate = useNavigate();
 
+    // Updates form state when any input field changes
     const handleChange = (e) => {
         setFormData({
             ...formData,
@@ -18,15 +21,17 @@ export default function login(){
         });
     };
 
+    // Submits credentials to the login endpoint and redirects on success
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            const response = await fetch("http://localhost/whatscooking/backend/login.php", {
+            const response = await fetch("http://localhost:8888/whatscooking/login.php", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
+            credentials: 'include',
             body: JSON.stringify(formData)
         });
 
@@ -34,22 +39,23 @@ export default function login(){
 
         if (result.status === "success") {
             alert("Log In Successful!");
-            navigate("/");  
+            
+            navigate("/");  // Redirect to home on successful login
         } else {
-            alert(result.message); 
+            alert(result.message); // Show server-provided error message
         }
         } catch (error) {
             alert("An error occurred. Please try again.");
         }
     }
 
-    
+
     return (
         <div>
             <form onSubmit={handleSubmit}>
                 <input
                     name="username"
-                    type="text" 
+                    type="text"
                     required
                     placeholder="Username"
                     value={formData.username}
@@ -58,8 +64,8 @@ export default function login(){
                 <input
                     name="password"
                     type="password"
-                    required 
-                    placeholder="Password" 
+                    required
+                    placeholder="Password"
                     value={formData.password}
                     onChange={handleChange}
                 />
@@ -68,6 +74,7 @@ export default function login(){
                 >
                     Log In
                 </button>
+                {/* reCAPTCHA widget — site key loaded from environment variable */}
                 <ReCAPTCHA sitekey={import.meta.env.VITE_REACT_APP_RECAPTCHA_SITE_KEY}/>
                 <a href="/forgotPassword">Forgot Password?</a>
                 <hr></hr>

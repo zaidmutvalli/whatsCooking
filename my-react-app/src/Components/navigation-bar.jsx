@@ -5,7 +5,27 @@ import {Link} from "react-router-dom";
 import chefImage from "../assets/chefLogo.webp";
 import { CgProfile } from "react-icons/cg";
 
+import{useState,useEffect} from 'react';
+
+
 function NavBar(){
+
+    const [user,setUser]=useState(null);
+
+    useEffect(()=>{
+
+        fetch("http://localhost:8888/whatscooking/get_user_info.php",{
+            credentials:'include'
+        })
+
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === "success"){
+                setUser(data.user)
+            }
+        });
+
+    },[]);
 
     return(
         <nav className="navBar">
@@ -21,7 +41,7 @@ function NavBar(){
             </ul>
             <div className="profile">
                 <icon><CgProfile /></icon>
-                <Link to='/logIn'>Sign In </Link>
+                {user ? <span>{user.username}</span> : <Link to='/logIn'>Sign In</Link>}
             </div>
             </div>
         </nav>
