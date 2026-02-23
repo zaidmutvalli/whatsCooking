@@ -1,0 +1,15 @@
+[build]
+  # The directory where your build command is run
+  base = "my-react-app"
+
+  # The command to build your site
+  command = "npm run build"
+
+  # The directory that contains the deploy-ready HTML/assets
+  # Change this from "build" to "dist"
+  publish = "dist"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.index"
+  status = 200
