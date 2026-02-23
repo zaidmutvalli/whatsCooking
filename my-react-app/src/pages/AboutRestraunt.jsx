@@ -95,7 +95,7 @@ export default function AboutRestaurant() {
                 onMouseOver={e => e.target.style.transform = 'scale(1.03)'}
                 onMouseOut={e => e.target.style.transform = 'scale(1)'} />
             </div>
-            
+            {/* Right grid */}
             <div style={{ display: 'grid', gridTemplateRows: photoCount >= 4 ? '1fr 1fr' : '1fr', gap: '8px' }}>
               {photoCount >= 4 ? (
                 <>
@@ -157,7 +157,7 @@ export default function AboutRestaurant() {
               {place.editorialSummary?.text && <p style={{ fontSize: '14px', color: '#555', lineHeight: 1.6, marginBottom: '16px' }}>{place.editorialSummary.text}</p>}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
-                  <span style={{ fontSize: '18px' }}>📍</span>
+                  
                   <div>
                     <p style={{ fontSize: '11px', color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 2px 0' }}>Address</p>
                     <p style={{ fontSize: '14px', color: '#444', margin: 0 }}>{place.formattedAddress}</p>
@@ -165,7 +165,7 @@ export default function AboutRestaurant() {
                 </div>
                 {place.priceLevel && (
                   <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
-                    <span style={{ fontSize: '18px' }}>💰</span>
+                    
                     <div>
                       <p style={{ fontSize: '11px', color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 2px 0' }}>Price</p>
                       <p style={{ fontSize: '14px', color: '#444', margin: 0 }}>{formatPrice(place.priceLevel)}</p>
@@ -174,7 +174,7 @@ export default function AboutRestaurant() {
                 )}
                 {place.rating && (
                   <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
-                    <span style={{ fontSize: '18px' }}>⭐</span>
+                    
                     <div>
                       <p style={{ fontSize: '11px', color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 2px 0' }}>Rating</p>
                       <p style={{ fontSize: '14px', color: '#444', margin: 0 }}>{place.rating} out of 5 · {place.userRatingCount?.toLocaleString()} reviews</p>
@@ -185,7 +185,7 @@ export default function AboutRestaurant() {
                 {/* Opening Hours */}
                 {place.currentOpeningHours?.weekdayDescriptions && (
                   <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
-                    <span style={{ fontSize: '18px' }}>🕐</span>
+                    
                     <div style={{ flex: 1 }}>
                       <p style={{ fontSize: '11px', color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 6px 0' }}>Opening Hours</p>
                       {/* Open/Closed badge */}
@@ -216,7 +216,7 @@ export default function AboutRestaurant() {
                 {/* Phone & Website */}
                 {place.nationalPhoneNumber && (
                   <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                    <span style={{ fontSize: '18px' }}>📞</span>
+                    
                     <div>
                       <p style={{ fontSize: '11px', color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 2px 0' }}>Phone</p>
                       <a href={`tel:${place.nationalPhoneNumber}`} style={{ fontSize: '14px', color: '#162167', textDecoration: 'none' }}>{place.nationalPhoneNumber}</a>
@@ -225,7 +225,7 @@ export default function AboutRestaurant() {
                 )}
                 {place.websiteUri && (
                   <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                    <span style={{ fontSize: '18px' }}>🌐</span>
+                    
                     <div>
                       <p style={{ fontSize: '11px', color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 2px 0' }}>Website</p>
                       <a href={place.websiteUri} target="_blank" rel="noreferrer" style={{ fontSize: '14px', color: '#162167', textDecoration: 'none' }}>Visit website ↗</a>

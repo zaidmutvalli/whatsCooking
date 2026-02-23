@@ -54,7 +54,7 @@ export default function TrendingPage() {
                 <p style={{ color: '#888', marginBottom: '24px', fontSize: '14px' }}>The highest rated spots near you right now</p>
 
                 {loading ? (
-                    <p style={{ textAlign: 'center', color: '#aaa', marginTop: '60px', fontSize: '16px' }}>Finding trending spots... 🔥</p>
+                    <p style={{ textAlign: 'center', color: '#aaa', marginTop: '60px', fontSize: '16px' }}>Finding trending spots...</p>
                 ) : (
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '20px' }}>
                         {trending.map((place, index) => (

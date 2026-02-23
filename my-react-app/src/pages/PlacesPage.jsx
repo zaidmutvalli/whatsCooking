@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { APIProvider, Map, AdvancedMarker, InfoWindow, useMap } from '@vis.gl/react-google-maps';
 
 const CATEGORY_STYLES = {
-    restaurant: { bg: '#e74c3c', label: '🍽️' },
-    cafe:       { bg: '#f39c12', label: '☕' },
-    bar:        { bg: '#8e44ad', label: '🍺' },
-    breakfast:  { bg: '#27ae60', label: '🥞' },
+    restaurant: { bg: '#e74c3c' },
+    cafe:       { bg: '#f39c12' },
+    bar:        { bg: '#8e44ad' },
+    breakfast:  { bg: '#27ae60' },
 };
 
 const TYPE_MAP = {
@@ -16,17 +16,17 @@ const TYPE_MAP = {
     breakfast:  ['restaurant', 'cafe', 'bakery'],
 };
 
-// Generate a grid of search points around the user so results spread across the city
+
 function getSearchGrid(centerLat, centerLng) {
     const points = [];
-    // ~0.045 degrees lat ≈ 5km, ~0.07 degrees lng ≈ 5km in UK
+    
     const offsets = [-0.09, -0.045, 0, 0.045, 0.09];
     for (const dLat of offsets) {
         for (const dLng of offsets) {
             points.push({ lat: centerLat + dLat, lng: centerLng + dLng });
         }
     }
-    return points; // 25 grid points covering ~20x20km area
+    return points; 
 }
 
 async function fetchAtPoint(category, lat, lng) {
@@ -100,14 +100,14 @@ function MapContent({ coords, activeCategories, apiKey }) {
         load();
     }, [coords]);
 
-    // Zoom listener
+    
     useEffect(() => {
         if (!map) return;
         const listener = map.addListener('zoom_changed', () => setZoom(map.getZoom()));
         return () => listener.remove();
     }, [map]);
 
-    // Filter by zoom level and active categories
+    
     useEffect(() => {
         const filtered = allPlaces.filter(p => {
             if (!activeCategories.includes(p.category)) return false;
@@ -131,7 +131,7 @@ function MapContent({ coords, activeCategories, apiKey }) {
 
     return (
         <>
-            
+            {/* Loading indicator */}
             {loadingCount < totalCount && totalCount > 0 && (
                 <div style={{
                     position: 'absolute', top: 10, left: '50%', transform: 'translateX(-50%)',
@@ -143,7 +143,7 @@ function MapContent({ coords, activeCategories, apiKey }) {
                 </div>
             )}
 
-            
+            {/* Total pin count */}
             {loadingCount >= totalCount && totalCount > 0 && (
                 <div style={{
                     position: 'absolute', top: 10, left: '50%', transform: 'translateX(-50%)',
@@ -155,7 +155,7 @@ function MapContent({ coords, activeCategories, apiKey }) {
                 </div>
             )}
 
-            
+            {/* User dot */}
             <AdvancedMarker position={coords}>
                 <div style={{
                     width: '16px', height: '16px', background: '#162167',
@@ -164,7 +164,7 @@ function MapContent({ coords, activeCategories, apiKey }) {
                 }} />
             </AdvancedMarker>
 
-            
+            {/* Place markers */}
             {visiblePlaces.map((place, index) => {
                 const lat = place.location?.latitude;
                 const lng = place.location?.longitude;
@@ -189,7 +189,7 @@ function MapContent({ coords, activeCategories, apiKey }) {
                 );
             })}
 
-            
+            {/* Info popup */}
             {selectedPlace?.location && (
                 <InfoWindow
                     position={{ lat: selectedPlace.location.latitude, lng: selectedPlace.location.longitude }}
@@ -250,7 +250,7 @@ export default function PlacesPage() {
     return (
         <div style={{ paddingTop: '68px', height: '100vh', display: 'flex', flexDirection: 'column', overflow: 'hidden', fontFamily: 'Arial, Helvetica, sans-serif' }}>
             <div style={{ padding: '10px 24px 6px 24px', flexShrink: 0 }}>
-                <h1 style={{ margin: '0 0 2px 0', fontSize: '1.4rem' }}>📍 Places Near You</h1>
+                <h1 style={{ margin: '0 0 2px 0', fontSize: '1.4rem' }}>Places Near You</h1>
             </div>
             <div style={{ padding: '6px 24px 10px 24px', display: 'flex', gap: '8px', flexShrink: 0, flexWrap: 'wrap' }}>
                 {Object.entries(CATEGORY_STYLES).map(([cat, style]) => (
