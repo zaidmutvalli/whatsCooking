@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 function Usersetting() {
-  const [name, setName] = useState("username");
+  const [name, setName] = useState("JoshA_380");
   const [editing, setEditing] = useState(false);
   const [input, setInput] = useState(name);
 
