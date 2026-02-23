@@ -1,8 +1,33 @@
 import "../styles/reviewPage.css"
-import { useState } from "react";
+import { useState,useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 
-export default function RightSide(){
+
+export default function RightSide({ resName, place }){
+
+  const [user,setUser]=useState(null);
+  const [loading,setLoading]=useState(true);
+  const navigate = useNavigate();
+
+    useEffect(()=>{
+
+        fetch("http://localhost:8888/get_user_info.php",{
+            credentials:'include'
+        })
+
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === "success"){
+                setUser(data.user)
+            }
+            setLoading(false);
+        })
+        .catch(()=> setLoading(false));
+
+    },[]);
+
+
     const [rating, setRating] = useState(0);
     const [title,setTitle] = useState('')
     const [reviewText,setReviewText] = useState('')
@@ -19,9 +44,18 @@ export default function RightSide(){
         rating:rating,
         title: title,
         reviewText: reviewText,
-        restaurantName: "La Creme",
-        userId: 1
+        restaurantName: resName,
+        userId: user.id
       };
+
+
+
+
+
+
+
+
+
 
       try {
           const response = await fetch("http://localhost:8888/addReview.php", {
@@ -36,6 +70,7 @@ export default function RightSide(){
 
           if (result.status === "success") {
               alert("Review submitted succesfully");
+              navigate('/about', { state: { place } })
              
           } else {
               alert(result.message); // Show server-provided error message
@@ -46,8 +81,17 @@ export default function RightSide(){
       }
   };
 
+    if (loading) return null;
+
+    if (!user) return (
+        <div className="notLoggedIn">
+            <p className="Question">You must be logged in to leave a review.</p>
+            <button className="ReviewSubmitButton" onClick={() => navigate('/logIn')}>Log In</button>
+        </div>
+    );
+
     return <>
- 
+
 
     <p className="Question">How would you rate your expierence?</p>
     <div className="rating">

@@ -1,11 +1,11 @@
 import React, { useLayoutEffect } from 'react';
 import AboutRestaurantCard, {Location} from '../Components/aboutRestraunt';
 import DisplayMap from "../Components/map"
-
+import DisplayReviews from '../Components/DisplayReviews';
 
 import "../styles/map.css";
 import "../styles/aboutRestrauntCard.css";
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 
 
@@ -21,6 +21,7 @@ const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || import.meta.env.VITE_
 export default function AboutRestaurant() {
   const {state}= useLocation();
   const place=state?.place;
+  const navigate = useNavigate();
 
   console.log(place);
 
@@ -50,6 +51,7 @@ export default function AboutRestaurant() {
 
    
 
+      <DisplayReviews resName={place?.displayName?.text} />
     </div>
 
     <div className='rightContent'>
@@ -64,6 +66,9 @@ export default function AboutRestaurant() {
       </div>
       <Location
        locAddressLine={place?.formattedAddress} />
+      <button onClick={() => navigate('/addReview', { state: { place } })}>
+        Write a Review
+      </button>
     </div>
 
     </div>
