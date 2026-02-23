@@ -79,7 +79,7 @@ function MapContent({ coords, activeCategories, apiKey }) {
             const seen = new Set();
             const allResults = [];
 
-            // Fetch in batches to avoid rate limiting
+            
             for (const point of grid) {
                 const batchResults = await Promise.all(
                     categories.map(cat => fetchAtPoint(cat, point.lat, point.lng))
@@ -131,7 +131,7 @@ function MapContent({ coords, activeCategories, apiKey }) {
 
     return (
         <>
-            {/* Loading progress indicator */}
+            
             {loadingCount < totalCount && totalCount > 0 && (
                 <div style={{
                     position: 'absolute', top: 10, left: '50%', transform: 'translateX(-50%)',
@@ -143,7 +143,7 @@ function MapContent({ coords, activeCategories, apiKey }) {
                 </div>
             )}
 
-            {/* Total pin count */}
+            
             {loadingCount >= totalCount && totalCount > 0 && (
                 <div style={{
                     position: 'absolute', top: 10, left: '50%', transform: 'translateX(-50%)',
@@ -155,7 +155,7 @@ function MapContent({ coords, activeCategories, apiKey }) {
                 </div>
             )}
 
-            {/* User dot */}
+            
             <AdvancedMarker position={coords}>
                 <div style={{
                     width: '16px', height: '16px', background: '#162167',
@@ -164,7 +164,7 @@ function MapContent({ coords, activeCategories, apiKey }) {
                 }} />
             </AdvancedMarker>
 
-            {/* Place markers */}
+            
             {visiblePlaces.map((place, index) => {
                 const lat = place.location?.latitude;
                 const lng = place.location?.longitude;
@@ -189,7 +189,7 @@ function MapContent({ coords, activeCategories, apiKey }) {
                 );
             })}
 
-            {/* Info popup */}
+            
             {selectedPlace?.location && (
                 <InfoWindow
                     position={{ lat: selectedPlace.location.latitude, lng: selectedPlace.location.longitude }}

@@ -61,7 +61,7 @@ export default function RightSide({ resName, place }) {
     <>
       <p className="Question">How would you rate your experience?</p>
 
-      {/* ⭐ STAR RATING */}
+      {/* STAR RATING */}
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '8px', marginBottom: '24px' }}>
         <div style={{ display: 'flex', gap: '8px' }}>
           {[1, 2, 3, 4, 5].map((star) => (

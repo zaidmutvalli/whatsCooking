@@ -69,10 +69,10 @@ export default function AboutRestaurant() {
         </div>
       </div>
 
-      {/* PHOTO GRID — Airbnb style */}
+      
       <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 24px 24px 24px' }}>
         {photoCount === 1 ? (
-          // Single photo — contained, not stretched
+          
           <div style={{ borderRadius: '16px', overflow: 'hidden', background: '#111', maxHeight: '420px', display: 'flex', justifyContent: 'center', cursor: 'pointer' }} onClick={() => setLightbox(0)}>
             <img src={getPhotoUrl(0, 1200)} alt="" style={{ maxHeight: '420px', maxWidth: '100%', objectFit: 'contain', display: 'block' }} />
           </div>
@@ -87,7 +87,7 @@ export default function AboutRestaurant() {
             ))}
           </div>
         ) : (
-          // 3+ photos — main left, grid right
+          
           <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: '8px', height: '400px', borderRadius: '16px', overflow: 'hidden' }}>
             {/* Main large photo */}
             <div style={{ overflow: 'hidden', cursor: 'pointer' }} onClick={() => setLightbox(0)}>

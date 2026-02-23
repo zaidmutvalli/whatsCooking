@@ -22,7 +22,7 @@ const CUISINE_MAP = {
   'coffee': 'coffee shop', 'cafe': 'cafe', 'cocktails': 'cocktail bar', 'bar': 'bar',
 };
 
-// --- TASK 4: INTEREST TRACKING HELPERS ---
+
 // Reads click history from localStorage and returns the top interest
 const getTopInterest = () => {
   try {
@@ -102,21 +102,21 @@ const RestaurantList = () => {
   const [allLoadedPlaces, setAllLoadedPlaces] = useState([]);
   const searchRef = useRef(null);
 
-  // Task 4 state
+
   const [pickedForYou, setPickedForYou] = useState([]);
   const [pickedLabel, setPickedLabel] = useState('');
 
-  // Task 5 state
+
   const [friendsReviewedPlaces, setFriendsReviewedPlaces] = useState([]);
   const [friendsVisitedPlaces, setFriendsVisitedPlaces] = useState([]);
 
   const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || import.meta.env.VITE_GOOGLE_API_KEY;
 
   const handleCardClick = (place) => {
-    // Task 4: record what they clicked
+  
     recordInterest(place);
 
-    // Navigate immediately — track in background so it never delays the user
+  
     navigate('/about', { state: { place } });
 
     fetch("http://localhost:8888/track_view.php", {
@@ -127,7 +127,7 @@ const RestaurantList = () => {
         restaurant_id: place.name,
         restaurant_name: place.displayName?.text
       })
-    }).catch(() => {}); // silently ignore errors
+    }).catch(() => {}); 
   };
 
   useEffect(() => {
@@ -168,7 +168,7 @@ const RestaurantList = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []); 
 
-  // Task 4: derive picked-for-you from already-loaded restaurants data
+  
   // This runs whenever restaurants or activeFilter changes — no extra API calls needed
   const buildPickedForYou = (data, currentFilter) => {
     const topPrice = getTopInterest();
@@ -205,7 +205,7 @@ const RestaurantList = () => {
   // Keep loadPickedForYou as a no-op stub so existing calls don't break
   const loadPickedForYou = async (lat, lng, currentFilter) => {};
 
-  // Task 5: load places friends have reviewed and visited
+ 
   const loadFriendsData = async (lat, lng) => {
     try {
       const res = await fetch('http://localhost:8888/get_social_feed.php', { credentials: 'include' });
@@ -508,17 +508,17 @@ const RestaurantList = () => {
             <CategoryRow title={`Search Results for "${searchQuery}"`} data={restaurants} />
           ) : (
             <>
-              {/* Task 3: Recent view recommendations */}
+              
               {recentViewName && recommendedPlaces.length > 0 && (
                 <CategoryRow title={`✨ Because you viewed ${recentViewName}...`} data={recommendedPlaces.slice(0, 10)} />
               )}
 
-              {/* Task 4: Interest-based personalised row */}
+              
               {pickedForYou.length > 0 && (
                 <CategoryRow title={pickedLabel} data={pickedForYou} />
               )}
 
-              {/* Task 5: Friends' reviewed places */}
+              
               {friendsReviewedPlaces.length > 0 && (
                 <CategoryRow
                   title="⭐ Places your friends reviewed"
@@ -526,7 +526,7 @@ const RestaurantList = () => {
                 />
               )}
 
-              {/* Task 5: Friends' visited places */}
+              
               {friendsVisitedPlaces.length > 0 && (
                 <CategoryRow
                   title="📍 Places your friends visited"
