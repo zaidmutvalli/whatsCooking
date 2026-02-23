@@ -8,7 +8,7 @@ import NavBar from "./Components/navigation-bar";
 import MainPage from "./pages/mainPage"; 
 
 import AboutRestaurant from "./pages/AboutRestraunt"; 
-
+import UserSettings from "./pages/user-settings";
 function App() {
   return (
     <Router>
@@ -19,6 +19,8 @@ function App() {
         
         {/* This tells the app: When at '/about', show AboutRestaurant */}
         <Route path="/about" element={<AboutRestaurant />} />
+
+        <Route path="/user-settings" element={<UserSettings />} />
       </Routes>
     </Router>
   );
