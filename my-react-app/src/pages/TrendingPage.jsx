@@ -50,7 +50,7 @@ export default function TrendingPage() {
     return (
         <div style={{ paddingTop: '68px', minHeight: '100vh', background: '#f9f9f9', fontFamily: 'Arial, Helvetica, sans-serif' }}>
             <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px 24px 40px 24px' }}>
-                <h1 style={{ margin: '0 0 4px 0', fontSize: '1.8rem', fontWeight: 'bold', color: '#1a1a1a' }}>🔥 Trending This Week</h1>
+                <h1 style={{ margin: '0 0 4px 0', fontSize: '1.8rem', fontWeight: 'bold', color: '#1a1a1a' }}>Trending This Week</h1>
                 <p style={{ color: '#888', marginBottom: '24px', fontSize: '14px' }}>The highest rated spots near you right now</p>
 
                 {loading ? (

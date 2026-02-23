@@ -10,7 +10,7 @@ export default function AboutRestaurant() {
   const { state } = useLocation();
   const place = state?.place;
   const navigate = useNavigate();
-  const [lightbox, setLightbox] = useState(null); // index of photo in lightbox
+  const [lightbox, setLightbox] = useState(null); 
 
   if (!place) {
     return (
@@ -89,13 +89,13 @@ export default function AboutRestaurant() {
         ) : (
           
           <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: '8px', height: '400px', borderRadius: '16px', overflow: 'hidden' }}>
-            {/* Main large photo */}
+            
             <div style={{ overflow: 'hidden', cursor: 'pointer' }} onClick={() => setLightbox(0)}>
               <img src={getPhotoUrl(0, 1200)} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transition: 'transform 0.2s' }}
                 onMouseOver={e => e.target.style.transform = 'scale(1.03)'}
                 onMouseOut={e => e.target.style.transform = 'scale(1)'} />
             </div>
-            {/* Right grid */}
+            
             <div style={{ display: 'grid', gridTemplateRows: photoCount >= 4 ? '1fr 1fr' : '1fr', gap: '8px' }}>
               {photoCount >= 4 ? (
                 <>
@@ -196,7 +196,7 @@ export default function AboutRestaurant() {
                           color: place.currentOpeningHours.openNow ? '#16a34a' : '#dc2626',
                           padding: '2px 10px', borderRadius: '20px', fontSize: '12px', fontWeight: 'bold'
                         }}>
-                          {place.currentOpeningHours.openNow ? '● Open Now' : '● Closed'}
+                          {place.currentOpeningHours.openNow ? 'Open Now' : 'Closed'}
                         </span>
                       )}
                       {place.currentOpeningHours.weekdayDescriptions.map((day, i) => {
@@ -257,12 +257,12 @@ export default function AboutRestaurant() {
               style={{ width: '100%', padding: '14px', background: '#162167', color: 'white', border: 'none', borderRadius: '12px', fontWeight: 'bold', fontSize: '15px', cursor: 'pointer', fontFamily: 'Arial, Helvetica, sans-serif', marginBottom: '10px' }}
               onMouseOver={e => e.target.style.background = '#0e103c'}
               onMouseOut={e => e.target.style.background = '#162167'}
-            >✍️ Write a Review</button>
+            >Write a Review</button>
             <a
               href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(place.formattedAddress)}`}
               target="_blank" rel="noreferrer"
               style={{ display: 'block', width: '100%', padding: '13px', background: 'white', color: '#162167', border: '2px solid #162167', borderRadius: '12px', fontWeight: 'bold', fontSize: '15px', cursor: 'pointer', fontFamily: 'Arial, Helvetica, sans-serif', textAlign: 'center', textDecoration: 'none', boxSizing: 'border-box' }}
-            >🗺️ Get Directions</a>
+            >Get Directions</a>
           </div>
         </div>
       </div>

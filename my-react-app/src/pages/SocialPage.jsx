@@ -41,7 +41,7 @@ export default function SocialPage() {
             });
             const data = await res.json();
             if (data.status === 'success') {
-                // Update local state
+                
                 setUsers(prev => prev.map(u =>
                     u.id === userId ? { ...u, is_following: data.action === 'followed' ? 1 : 0 } : u
                 ));
@@ -91,7 +91,7 @@ export default function SocialPage() {
 
     return (
         <div style={styles.page}>
-            <h1 style={styles.heading}>👥 Social</h1>
+            <h1 style={styles.heading}>Social</h1>
             <p style={styles.subtext}>See what your friends have been eating</p>
 
             {/* Tabs */}
@@ -100,14 +100,14 @@ export default function SocialPage() {
                 <button style={styles.tab(activeTab === 'people')} onClick={() => setActiveTab('people')}>Find People</button>
             </div>
 
-            {/* FEED TAB */}
+            {/* FEED */}
             {activeTab === 'feed' && (
                 <>
                     {loading ? (
                         <p style={{ color: '#aaa', textAlign: 'center' }}>Loading feed...</p>
                     ) : feed.reviews.length === 0 && feed.visits.length === 0 ? (
                         <div style={styles.empty}>
-                            <div style={styles.emptyIcon}>🍽️</div>
+                            <div style={styles.emptyIcon}></div>
                             <p style={{ fontWeight: 'bold', color: '#555', margin: '0 0 8px 0' }}>No activity yet</p>
                             <p style={{ margin: 0, fontSize: '14px' }}>Follow some friends to see their reviews and visits here</p>
                         </div>
@@ -116,7 +116,7 @@ export default function SocialPage() {
                             {/* Reviews */}
                             {feed.reviews.length > 0 && (
                                 <>
-                                    <h3 style={{ margin: '0 0 12px 0', fontSize: '1rem', color: '#555' }}>⭐ Friends' Reviews</h3>
+                                    <h3 style={{ margin: '0 0 12px 0', fontSize: '1rem', color: '#555' }}>Friends' Reviews</h3>
                                     {feed.reviews.map((r, i) => (
                                         <div key={i} style={styles.card}>
                                             <div style={styles.row}>
@@ -139,7 +139,7 @@ export default function SocialPage() {
                             {/* Visits */}
                             {feed.visits.length > 0 && (
                                 <>
-                                    <h3 style={{ margin: '20px 0 12px 0', fontSize: '1rem', color: '#555' }}>📍 Friends' Visits</h3>
+                                    <h3 style={{ margin: '20px 0 12px 0', fontSize: '1rem', color: '#555' }}>Friends' Visits</h3>
                                     {feed.visits.map((v, i) => (
                                         <div key={i} style={styles.card}>
                                             <div style={styles.row}>
@@ -172,7 +172,7 @@ export default function SocialPage() {
                     />
                     {users.length === 0 ? (
                         <div style={styles.empty}>
-                            <div style={styles.emptyIcon}>👤</div>
+                            <div style={styles.emptyIcon}></div>
                             <p style={{ margin: 0, fontSize: '14px' }}>No users found</p>
                         </div>
                     ) : (
