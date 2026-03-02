@@ -368,6 +368,7 @@ const RestaurantList = () => {
                   src={getPhotoUrl(place)} 
                   alt={place.displayName?.text} 
                   className="fixed-size-img"
+                  loading="lazy"
                   onError={(e) => { e.target.src = "https://via.placeholder.com/300x400" }}
                 />
                 <span className="rating-badge">⭐ {place.rating} ({place.userRatingCount || 0})</span>

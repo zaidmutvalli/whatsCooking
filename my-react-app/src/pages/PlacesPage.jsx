@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { APIProvider, Map, AdvancedMarker, InfoWindow, useMap } from '@vis.gl/react-google-maps';
 
 const CATEGORY_STYLES = {
-    restaurant: { bg: '#e74c3c' },
-    cafe:       { bg: '#f39c12' },
-    bar:        { bg: '#8e44ad' },
-    breakfast:  { bg: '#27ae60' },
+    restaurant: { bg: '#e74c3c'},
+    cafe:       { bg: '#f39c12'},
+    bar:        { bg: '#8e44ad'},
+    breakfast:  { bg: '#27ae60'},
 };
 
 const TYPE_MAP = {
@@ -15,19 +15,6 @@ const TYPE_MAP = {
     bar:        ['bar'],
     breakfast:  ['restaurant', 'cafe', 'bakery'],
 };
-
-
-function getSearchGrid(centerLat, centerLng) {
-    const points = [];
-    
-    const offsets = [-0.09, -0.045, 0, 0.045, 0.09];
-    for (const dLat of offsets) {
-        for (const dLng of offsets) {
-            points.push({ lat: centerLat + dLat, lng: centerLng + dLng });
-        }
-    }
-    return points; 
-}
 
 async function fetchAtPoint(category, lat, lng) {
     const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || import.meta.env.VITE_GOOGLE_API_KEY;
@@ -46,7 +33,7 @@ async function fetchAtPoint(category, lat, lng) {
                 locationRestriction: {
                     circle: {
                         center: { latitude: lat, longitude: lng },
-                        radius: 2000
+                        radius: 5000 
                     }
                 }
             })
@@ -70,44 +57,39 @@ function MapContent({ coords, activeCategories, apiKey }) {
 
     useEffect(() => {
         const load = async () => {
-            const grid = getSearchGrid(coords.lat, coords.lng);
             const categories = ['restaurant', 'cafe', 'bar', 'breakfast'];
-            const total = grid.length * categories.length;
-            setTotalCount(total);
+            
+            setTotalCount(categories.length);
             setLoadingCount(0);
 
             const seen = new Set();
             const allResults = [];
 
+            const batchResults = await Promise.all(
+                categories.map(cat => fetchAtPoint(cat, coords.lat, coords.lng))
+            );
             
-            for (const point of grid) {
-                const batchResults = await Promise.all(
-                    categories.map(cat => fetchAtPoint(cat, point.lat, point.lng))
-                );
-                setLoadingCount(prev => prev + categories.length);
+            setLoadingCount(categories.length);
 
-                batchResults.flat().forEach(p => {
-                    const name = p.displayName?.text;
-                    if (name && !seen.has(name) && p.location?.latitude) {
-                        seen.add(name);
-                        allResults.push(p);
-                    }
-                });
-            }
+            batchResults.flat().forEach(p => {
+                const name = p.displayName?.text;
+                if (name && !seen.has(name) && p.location?.latitude) {
+                    seen.add(name);
+                    allResults.push(p);
+                }
+            });
 
             setAllPlaces(allResults);
         };
         load();
     }, [coords]);
 
-    
     useEffect(() => {
         if (!map) return;
         const listener = map.addListener('zoom_changed', () => setZoom(map.getZoom()));
         return () => listener.remove();
     }, [map]);
 
-    
     useEffect(() => {
         const filtered = allPlaces.filter(p => {
             if (!activeCategories.includes(p.category)) return false;
@@ -131,7 +113,6 @@ function MapContent({ coords, activeCategories, apiKey }) {
 
     return (
         <>
-            {/* Loading indicator */}
             {loadingCount < totalCount && totalCount > 0 && (
                 <div style={{
                     position: 'absolute', top: 10, left: '50%', transform: 'translateX(-50%)',
@@ -143,7 +124,6 @@ function MapContent({ coords, activeCategories, apiKey }) {
                 </div>
             )}
 
-            {/* Total pin count */}
             {loadingCount >= totalCount && totalCount > 0 && (
                 <div style={{
                     position: 'absolute', top: 10, left: '50%', transform: 'translateX(-50%)',
@@ -155,7 +135,6 @@ function MapContent({ coords, activeCategories, apiKey }) {
                 </div>
             )}
 
-            {/* User dot */}
             <AdvancedMarker position={coords}>
                 <div style={{
                     width: '16px', height: '16px', background: '#162167',
@@ -164,7 +143,6 @@ function MapContent({ coords, activeCategories, apiKey }) {
                 }} />
             </AdvancedMarker>
 
-            {/* Place markers */}
             {visiblePlaces.map((place, index) => {
                 const lat = place.location?.latitude;
                 const lng = place.location?.longitude;
@@ -189,7 +167,6 @@ function MapContent({ coords, activeCategories, apiKey }) {
                 );
             })}
 
-            {/* Info popup */}
             {selectedPlace?.location && (
                 <InfoWindow
                     position={{ lat: selectedPlace.location.latitude, lng: selectedPlace.location.longitude }}
@@ -197,8 +174,12 @@ function MapContent({ coords, activeCategories, apiKey }) {
                 >
                     <div style={{ maxWidth: '220px', fontFamily: 'Arial, sans-serif' }}>
                         {getPhotoUrl(selectedPlace) && (
-                            <img src={getPhotoUrl(selectedPlace)} alt={selectedPlace.displayName?.text}
-                                style={{ width: '100%', height: '110px', objectFit: 'cover', borderRadius: '8px', marginBottom: '8px' }} />
+                            <img 
+                                src={getPhotoUrl(selectedPlace)} 
+                                alt={selectedPlace.displayName?.text}
+                                loading="lazy"
+                                style={{ width: '100%', height: '110px', objectFit: 'cover', borderRadius: '8px', marginBottom: '8px' }} 
+                            />
                         )}
                         <p style={{ fontWeight: 'bold', margin: '0 0 3px 0', fontSize: '14px', color: '#111' }}>
                             {selectedPlace.displayName?.text}
@@ -230,6 +211,7 @@ export default function PlacesPage() {
     const [activeCategories, setActiveCategories] = useState(['restaurant', 'cafe', 'bar', 'breakfast']);
 
     const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || import.meta.env.VITE_GOOGLE_API_KEY;
+    
     const mapId = import.meta.env.VITE_GOOGLE_MAP_ID;
 
     useEffect(() => {
