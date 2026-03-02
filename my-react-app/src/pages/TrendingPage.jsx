@@ -46,7 +46,7 @@ export default function TrendingPage() {
 
     const getPhotoUrl = (place) => {
         if (place.photos && place.photos.length > 0) {
-            return `https://places.googleapis.com/v1/${place.photos[0].name}/media?key=${apiKey}&maxHeightPx=200&maxWidthPx=200`;
+            return `https://places.googleapis.com/v1/${place.photos[0].name}/media?key=${apiKey}&maxHeightPx=400&maxWidthPx=400`;
         }
         return 'https://via.placeholder.com/300x400?text=No+Image';
     };

@@ -83,7 +83,7 @@ const RestaurantList = () => {
   const [recommendedPlaces, setRecommendedPlaces] = useState([]);
   const [activeFilter, setActiveFilter] = useState('restaurant');
   const [openNowOnly, setOpenNowOnly] = useState(false);
-  const [priceFilter, setPriceFilter] = useState(null); 
+  const [priceFilter, setPriceFilter] = useState(null);
   const [loading, setLoading] = useState(false);
   const [userCoords, setUserCoords] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -115,7 +115,7 @@ const RestaurantList = () => {
 
   useEffect(() => {
     const getInitialData = () => {
-      setLoading(true); 
+      setLoading(true);
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
           async (position) => {
@@ -149,7 +149,7 @@ const RestaurantList = () => {
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []); 
+  }, []);
 
   const buildPickedForYou = (data, currentFilter) => {
     const topPrice = getTopInterest();
@@ -233,7 +233,9 @@ const RestaurantList = () => {
       return;
     }
 
-    const data = await fetchRestaurants(category, latitude, longitude);
+    const data = category === 'breakfast'
+      ? await searchRestaurantsByText('breakfast brunch cafe', latitude, longitude)
+      : await fetchRestaurants(category, latitude, longitude);
 
     try {
       sessionStorage.setItem(cacheKey, JSON.stringify(data));
@@ -292,7 +294,7 @@ const RestaurantList = () => {
   };
 
   const handleSearchSubmit = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     if (!searchQuery.trim()) return;
     setShowSuggestions(false);
     const q = searchQuery.toLowerCase().trim();
@@ -315,8 +317,8 @@ const RestaurantList = () => {
 
   const handleFilterClick = (category) => {
     if (category === activeFilter && !isSearching) return;
-    recordTabInterest(category); 
-    setSearchQuery(''); 
+    recordTabInterest(category);
+    setSearchQuery('');
     setActiveFilter(category);
     loadData(category, userCoords?.lat, userCoords?.lng);
     loadPickedForYou(userCoords?.lat || 53.4808, userCoords?.lng || -2.2426, category);
@@ -324,7 +326,7 @@ const RestaurantList = () => {
 
   const getPhotoUrl = (place) => {
     if (place.photos && place.photos.length > 0) {
-      return `https://places.googleapis.com/v1/${place.photos[0].name}/media?key=${apiKey}&maxHeightPx=200&maxWidthPx=200`;
+      return `https://places.googleapis.com/v1/${place.photos[0].name}/media?key=${apiKey}&maxHeightPx=800&maxWidthPx=800`;
     }
     return "https://via.placeholder.com/300x400?text=No+Image";
   };
@@ -353,7 +355,7 @@ const RestaurantList = () => {
   const localPlaces = filteredRestaurants.slice(0, 10);
 
   const CategoryRow = ({ title, data }) => {
-    if (!data || data.length === 0) return null; 
+    if (!data || data.length === 0) return null;
     return (
       <div className="category-row">
         <h2 className="row-title">{title}</h2>
@@ -361,9 +363,9 @@ const RestaurantList = () => {
           {data.map((place, index) => (
             <div key={index} className="restaurant-horizontal-card" onClick={() => handleCardClick(place)}>
               <div className="img-wrapper">
-                <img 
-                  src={getPhotoUrl(place)} 
-                  alt={place.displayName?.text} 
+                <img
+                  src={getPhotoUrl(place)}
+                  alt={place.displayName?.text}
                   className="fixed-size-img"
                   loading="lazy"
                   onError={(e) => { e.target.src = "https://via.placeholder.com/300x400" }}
@@ -387,9 +389,9 @@ const RestaurantList = () => {
         <form onSubmit={handleSearchSubmit} className="search-form">
           <div className="search-input-wrapper">
             <span className="search-icon">🔍</span>
-            <input 
-              type="text" 
-              placeholder="Search 'pizza', 'curry', 'Dishoom', 'vegan'..." 
+            <input
+              type="text"
+              placeholder="Search 'pizza', 'curry', 'Dishoom', 'vegan'..."
               value={searchQuery}
               onChange={handleSearchChange}
               onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
@@ -426,7 +428,7 @@ const RestaurantList = () => {
       <div className="filter-section">
         <div className="filter-row">
           {['Restaurant', 'Cafe', 'Bar', 'Breakfast'].map((type) => (
-            <button 
+            <button
               key={type}
               onClick={() => handleFilterClick(type.toLowerCase())}
               className={`filter-btn ${activeFilter === type.toLowerCase() && !isSearching ? 'active' : ''}`}
