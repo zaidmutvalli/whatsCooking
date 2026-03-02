@@ -33,7 +33,7 @@ async function fetchAtPoint(category, lat, lng) {
                 locationRestriction: {
                     circle: {
                         center: { latitude: lat, longitude: lng },
-                        radius: 5000 
+                        radius: 2000 
                     }
                 }
             })
