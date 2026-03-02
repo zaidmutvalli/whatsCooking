@@ -22,13 +22,11 @@ const CUISINE_MAP = {
   'coffee': 'coffee shop', 'cafe': 'cafe', 'cocktails': 'cocktail bar', 'bar': 'bar',
 };
 
-
 const getTopInterest = () => {
   try {
     const raw = localStorage.getItem('wc_interests');
     if (!raw) return null;
     const interests = JSON.parse(raw);
-    
     const sorted = Object.entries(interests).sort((a, b) => b[1] - a[1]);
     return sorted.length > 0 ? sorted[0][0] : null;
   } catch {
@@ -36,22 +34,16 @@ const getTopInterest = () => {
   }
 };
 
-
 const recordInterest = (place) => {
   try {
     const raw = localStorage.getItem('wc_interests');
     const interests = raw ? JSON.parse(raw) : {};
-
-    
     const price = place.priceLevel;
     if (price) {
       interests[price] = (interests[price] || 0) + 1;
     }
-
-    
     const raw2 = localStorage.getItem('wc_tab_interests');
     const tabInterests = raw2 ? JSON.parse(raw2) : {};
-
     localStorage.setItem('wc_interests', JSON.stringify(interests));
   } catch {}
 };
@@ -100,24 +92,16 @@ const RestaurantList = () => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [allLoadedPlaces, setAllLoadedPlaces] = useState([]);
   const searchRef = useRef(null);
-
-  
   const [pickedForYou, setPickedForYou] = useState([]);
   const [pickedLabel, setPickedLabel] = useState('');
-
-  
   const [friendsReviewedPlaces, setFriendsReviewedPlaces] = useState([]);
   const [friendsVisitedPlaces, setFriendsVisitedPlaces] = useState([]);
 
   const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || import.meta.env.VITE_GOOGLE_API_KEY;
 
   const handleCardClick = (place) => {
-    
     recordInterest(place);
-
-    
     navigate('/about', { state: { place } });
-
     fetch("http://localhost:8888/track_view.php", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -167,12 +151,10 @@ const RestaurantList = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []); 
 
-  
   const buildPickedForYou = (data, currentFilter) => {
     const topPrice = getTopInterest();
 
     if (topPrice && PRICE_LABEL[topPrice]) {
-      
       const filtered = data
         .filter(p => p.priceLevel === topPrice)
         .sort((a, b) => (b.rating || 0) - (a.rating || 0))
@@ -185,12 +167,10 @@ const RestaurantList = () => {
       }
     }
 
-    
     const topRated = [...data]
       .sort((a, b) => (b.rating || 0) - (a.rating || 0))
       .slice(0, 10);
 
-    
     const hasInterest = localStorage.getItem('wc_interests') || localStorage.getItem('wc_tab_interests');
     if (hasInterest && topRated.length > 0) {
       setPickedForYou(topRated);
@@ -200,16 +180,13 @@ const RestaurantList = () => {
     }
   };
 
-  
   const loadPickedForYou = async (lat, lng, currentFilter) => {};
 
-  
   const loadFriendsData = async (lat, lng) => {
     try {
       const res = await fetch('http://localhost:8888/get_social_feed.php', { credentials: 'include' });
       const data = await res.json();
       if (data.status === 'success') {
-        
         const reviewedNames = [...new Set(data.reviews.map(r => r.restaurant_name))];
         const visitedNames = [...new Set(data.visits.map(v => v.restaurant_name))];
         setFriendsReviewedPlaces(reviewedNames);
@@ -239,7 +216,29 @@ const RestaurantList = () => {
     setIsSearching(false);
     const latitude = lat || userCoords?.lat || 53.4808;
     const longitude = lng || userCoords?.lng || -2.2426;
+
+    const cacheKey = `wc_restaurants_${category}_${Math.round(latitude * 100)}_${Math.round(longitude * 100)}`;
+    const cached = sessionStorage.getItem(cacheKey);
+
+    if (cached) {
+      const data = JSON.parse(cached);
+      setRestaurants(data);
+      setAllLoadedPlaces(prev => {
+        const seen = new Set(prev.map(p => p.displayName?.text));
+        const newOnes = data.filter(p => !seen.has(p.displayName?.text));
+        return [...prev, ...newOnes];
+      });
+      buildPickedForYou(data, category);
+      setLoading(false);
+      return;
+    }
+
     const data = await fetchRestaurants(category, latitude, longitude);
+
+    try {
+      sessionStorage.setItem(cacheKey, JSON.stringify(data));
+    } catch (e) {}
+
     setRestaurants(data);
     setAllLoadedPlaces(prev => {
       const seen = new Set(prev.map(p => p.displayName?.text));
@@ -320,13 +319,12 @@ const RestaurantList = () => {
     setSearchQuery(''); 
     setActiveFilter(category);
     loadData(category, userCoords?.lat, userCoords?.lng);
-    
     loadPickedForYou(userCoords?.lat || 53.4808, userCoords?.lng || -2.2426, category);
   };
 
   const getPhotoUrl = (place) => {
     if (place.photos && place.photos.length > 0) {
-      return `https://places.googleapis.com/v1/${place.photos[0].name}/media?key=${apiKey}&maxHeightPx=400&maxWidthPx=400`;
+      return `https://places.googleapis.com/v1/${place.photos[0].name}/media?key=${apiKey}&maxHeightPx=200&maxWidthPx=200`;
     }
     return "https://via.placeholder.com/300x400?text=No+Image";
   };
@@ -341,7 +339,6 @@ const RestaurantList = () => {
     }
   };
 
-  
   const filteredRestaurants = restaurants.filter(p => {
     if (openNowOnly && p.currentOpeningHours?.openNow === false) return false;
     if (priceFilter && p.priceLevel !== priceFilter) return false;
@@ -386,8 +383,6 @@ const RestaurantList = () => {
 
   return (
     <div className="restaurant-list-container">
-
-    
       <div className="search-container" ref={searchRef}>
         <form onSubmit={handleSearchSubmit} className="search-form">
           <div className="search-input-wrapper">
@@ -428,7 +423,6 @@ const RestaurantList = () => {
         </form>
       </div>
 
-      
       <div className="filter-section">
         <div className="filter-row">
           {['Restaurant', 'Cafe', 'Bar', 'Breakfast'].map((type) => (
@@ -443,9 +437,7 @@ const RestaurantList = () => {
         </div>
       </div>
 
-      
       <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '16px', alignItems: 'center' }}>
-        
         <button
           onClick={() => setOpenNowOnly(o => !o)}
           style={{
@@ -460,7 +452,6 @@ const RestaurantList = () => {
           {openNowOnly ? 'Open Now' : 'Open Now'}
         </button>
 
-        
         {[
           { label: '£', value: 'PRICE_LEVEL_INEXPENSIVE' },
           { label: '££', value: 'PRICE_LEVEL_MODERATE' },
@@ -483,7 +474,6 @@ const RestaurantList = () => {
           </button>
         ))}
 
-        
         {(openNowOnly || priceFilter) && (
           <button
             onClick={() => { setOpenNowOnly(false); setPriceFilter(null); }}
@@ -498,7 +488,6 @@ const RestaurantList = () => {
         )}
       </div>
 
-      
       {loading ? (
         <p className="loading-text">Finding spots nearby... 📍</p>
       ) : (
@@ -507,17 +496,14 @@ const RestaurantList = () => {
             <CategoryRow title={`Search Results for "${searchQuery}"`} data={restaurants} />
           ) : (
             <>
-              
               {recentViewName && recommendedPlaces.length > 0 && (
                 <CategoryRow title={`Because you viewed ${recentViewName}`} data={recommendedPlaces.slice(0, 10)} />
               )}
 
-              
               {pickedForYou.length > 0 && (
                 <CategoryRow title={pickedLabel} data={pickedForYou} />
               )}
 
-              
               {friendsReviewedPlaces.length > 0 && (
                 <CategoryRow
                   title="Places your friends reviewed"
@@ -525,7 +511,6 @@ const RestaurantList = () => {
                 />
               )}
 
-              
               {friendsVisitedPlaces.length > 0 && (
                 <CategoryRow
                   title="Places your friends visited"
