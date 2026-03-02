@@ -12,10 +12,24 @@ export default function TrendingPage() {
 
     useEffect(() => {
         const load = async (lat, lng) => {
+            const cacheKey = `wc_trending_${Math.round(lat * 100)}_${Math.round(lng * 100)}`;
+            const cached = sessionStorage.getItem(cacheKey);
+
+            if (cached) {
+                setTrending(JSON.parse(cached));
+                setLoading(false);
+                return;
+            }
+
             const data = await fetchRestaurants('restaurant', lat, lng);
             const sorted = [...data]
                 .filter(p => (p.userRatingCount || 0) > 200)
                 .sort((a, b) => (b.rating || 0) - (a.rating || 0));
+
+            try {
+                sessionStorage.setItem(cacheKey, JSON.stringify(sorted));
+            } catch (e) {}
+
             setTrending(sorted);
             setLoading(false);
         };
@@ -73,10 +87,10 @@ export default function TrendingPage() {
                                     <img
                                         src={getPhotoUrl(place)}
                                         alt={place.displayName?.text}
+                                        loading="lazy"
                                         style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                                         onError={(e) => { e.target.src = 'https://via.placeholder.com/300x400'; }}
                                     />
-                                    {/* Rank badge */}
                                     <span style={{
                                         position: 'absolute', top: '10px', left: '10px',
                                         background: '#162167', color: 'white',
@@ -86,7 +100,6 @@ export default function TrendingPage() {
                                     }}>
                                         #{index + 1}
                                     </span>
-                                    {/* Rating badge */}
                                     <span style={{
                                         position: 'absolute', bottom: '10px', right: '10px',
                                         background: 'white', padding: '3px 8px', borderRadius: '20px',
