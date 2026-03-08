@@ -1,11 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 function Usersetting() {
   const [name, setName] = useState("JoshA_380");
   const [editing, setEditing] = useState(false);
   const [input, setInput] = useState(name);
+ 
 
   const [avatar, setAvatar] = useState("https://via.placeholder.com/150");
+
+  //change name 
+   useEffect(() => {
+    const savedName = localStorage.getItem('username');
+    if (savedName) {
+      setName(savedName);
+      setInput(savedName);
+    }
+  }, []);
 
   // picture upload
   const handleAvatarUpload = (e) => {
@@ -18,7 +28,11 @@ function Usersetting() {
       reader.readAsDataURL(file);
     }
   };
-
+   const saveUsername = (newName) => {
+    setName(newName);
+    localStorage.setItem('username', newName);
+    window.dispatchEvent(new Event('storage'));
+  };
   return (
     <div
       style={{
@@ -119,7 +133,9 @@ function Usersetting() {
             <div style={{ display: "flex", gap: "15px" }}>
               <button
                 onClick={() => {
-                  if (input.trim()) setName(input);
+                  if (input.trim()) {
+                    saveUsername(input);  
+                  }
                   setEditing(false);
                 }}
                 style={{
