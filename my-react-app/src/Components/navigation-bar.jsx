@@ -9,6 +9,7 @@ import { useState, useEffect } from 'react';
 function NavBar() {
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
+    const [username, setUsername] = useState('JoshA_380');
 
     useEffect(() => {
         fetch("http://localhost:8888/get_user_info.php", {
@@ -21,14 +22,32 @@ function NavBar() {
             }
         });
     }, []);
+    useEffect(() => {
+        const handleStorageChange = () => {
+            const savedUsername = localStorage.getItem('username');
+            if (savedUsername) {
+                setUsername(savedUsername);
+            }
+        };
+          window.addEventListener('storage', handleStorageChange);
+        return () => window.removeEventListener('storage', handleStorageChange);
+    }, []);
+const GoToUserSettings = () => {
+        navigate('/user-settings'); 
+    };
 
     return (
+
+ /* Chen to do: Add an onclick to JoshA_380 to navigate to the page user settings*/ 
         <nav className="navBar">
             <div className="leftSection">
                 <img src={chefImage} alt="Chef Logo" className="chefLogo" />
                 <Link to="/" className="nav-brand"><h1>WhatsCooking</h1></Link>
             </div>
             <div className="rightSection">
+
+
+
                 <ul className="menu">
                     <li>
                         <Link to="/places" className="nav-link">Places</Link>
@@ -40,9 +59,13 @@ function NavBar() {
                         <Link to="/trending" className="nav-link">Trending</Link>
                     </li>
                 </ul>
-                <div className="profile">
+                <div className="profile" onClick={GoToUserSettings} style={{ cursor: 'pointer' }}>
                     <CgProfile />
-                    {user ? <span>{user.username}</span> : <Link to='/logIn'>Sign In</Link>}
+                    {user ? (
+                        <span>{user.username}</span>
+                    ) : (
+                        <Link to='/logIn' onClick={(e) => e.stopPropagation()}>Sign In</Link>
+                    )}
                 </div>
             </div>
         </nav>
