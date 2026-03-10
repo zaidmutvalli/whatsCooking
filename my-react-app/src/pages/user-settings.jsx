@@ -4,9 +4,18 @@ function Usersetting() {
   const [name, setName] = useState("JoshA_380");
   const [editing, setEditing] = useState(false);
   const [input, setInput] = useState(name);
- 
-
   const [avatar, setAvatar] = useState("https://via.placeholder.com/150");
+  useEffect(() => {
+    const savedName = localStorage.getItem('username');
+    if (savedName) {
+      setName(savedName);
+      setInput(savedName);
+    }
+    const savedAvatar = localStorage.getItem('avatar');
+    if (savedAvatar) {
+      setAvatar(savedAvatar);
+    }
+  }, []);
 
   //change name 
    useEffect(() => {
@@ -24,6 +33,7 @@ function Usersetting() {
       const reader = new FileReader();
       reader.onloadend = () => {
         setAvatar(reader.result);
+        localStorage.setItem('avatar', reader.result);
       };
       reader.readAsDataURL(file);
     }

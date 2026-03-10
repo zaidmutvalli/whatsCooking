@@ -40,8 +40,8 @@ const GoToUserSettings = () => {
     return (
 
 
- /* Chen to do: Add an onclick to JoshA_380 to navigate to the page user settings*/ 
 
+ /* Chen to do: Add an onclick to JoshA_380 to navigate to the page user settings*/ 
 
         <nav className="navBar">
             <div className="leftSection">
@@ -49,6 +49,10 @@ const GoToUserSettings = () => {
                 <Link to="/" className="nav-brand"><h1>WhatsCooking</h1></Link>
             </div>
             <div className="rightSection">
+
+
+
+
 
                 <ul className="menu">
                     <li>
