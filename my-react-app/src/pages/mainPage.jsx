@@ -1,17 +1,13 @@
 import React from 'react';
-import NavigationBar from '../Components/navigation-bar';
+import RestaurantList from '../Components/restrauntList';
 
-import RestaurantList from '../Components/restrauntList'; 
-console.log(import.meta.env.VITE_GOOGLE_MAPS_API_KEY);
 const MainPage = () => {
   return (
-    <div className="main-page">
-      <NavigationBar />
-      
-      <div style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
-        <h1>Nearby Restaurants</h1>
-        
-        {/* This replaces the old "Restaurant 1, Restaurant 2" hardcoded cards */}
+    <div style={{ paddingTop: '68px', minHeight: '100vh' }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '16px 20px 0 20px' }}>
+        <h1 style={{ margin: '0 0 16px 0', fontSize: '1.8rem', color: '#1a1a1a', fontFamily: 'Arial, Helvetica, sans-serif' }}>
+          Nearby Restaurants
+        </h1>
         <RestaurantList />
       </div>
     </div>

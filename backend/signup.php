@@ -1,6 +1,9 @@
 <?php
 
-header("Access-Control-Allow-Origin: *");
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+$allowedOrigin = (preg_match('/^http:\/\/localhost:\d+$/', $origin)) ? $origin : '';
+header("Access-Control-Allow-Origin: $allowedOrigin");
+header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE");
 header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
 
@@ -35,7 +38,8 @@ if(!$username || !$password || !$email || !$confirm) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($password !== $confirm) {
-        exit('Passwords do not match');
+        echo json_encode(["status" => "error", "message" => "Passwords do not match"]);
+        exit;
     }
 
     date_default_timezone_set("Europe/London");
@@ -69,10 +73,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo json_encode(["status" => "error", "message" => "Database error: " . $con->error]);
     }
 
-    exit;
     $stmt->close();
     $con->close();
+    exit;
 
 }
+
+
+
+
+
 
 ?>

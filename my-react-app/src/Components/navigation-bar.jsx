@@ -1,31 +1,75 @@
 import "../index.css";
 import "../styles/nav-bar.css";
 
-import {Link} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import chefImage from "../assets/chefLogo.webp";
 import { CgProfile } from "react-icons/cg";
+import { useState, useEffect } from 'react';
 
-function NavBar(){
+function NavBar() {
+    const [user, setUser] = useState(null);
+    const navigate = useNavigate();
+    const [username, setUsername] = useState('JoshA_380');
 
-    return(
+    useEffect(() => {
+        fetch("http://localhost:8888/get_user_info.php", {
+            credentials: 'include'
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === "success") {
+                setUser(data.user);
+            }
+        });
+    }, []);
+    useEffect(() => {
+        const handleStorageChange = () => {
+            const savedUsername = localStorage.getItem('username');
+            if (savedUsername) {
+                setUsername(savedUsername);
+            }
+        };
+          window.addEventListener('storage', handleStorageChange);
+        return () => window.removeEventListener('storage', handleStorageChange);
+    }, []);
+const GoToUserSettings = () => {
+        navigate('/user-settings'); 
+    };
+
+    return (
+
+ /* Chen to do: Add an onclick to JoshA_380 to navigate to the page user settings*/ 
         <nav className="navBar">
             <div className="leftSection">
-           <img src={chefImage} alt="Chef Logo" className="chefLogo"/>
-            <h1>WhatsCooking</h1>
+                <img src={chefImage} alt="Chef Logo" className="chefLogo" />
+                <Link to="/" className="nav-brand"><h1>WhatsCooking</h1></Link>
             </div>
             <div className="rightSection">
-            <ul className="menu">
-                <li>Places</li>
-                <li>Social</li>
-                <li>Trending</li>
-            </ul>
-            <div className="profile">
-                <icon><CgProfile /></icon>
-                <Link to='/logIn'>Sign In </Link>
-            </div>
+
+
+
+                <ul className="menu">
+                    <li>
+                        <Link to="/places" className="nav-link">Places</Link>
+                    </li>
+                    <li>
+                        <Link to="/social" className="nav-link">Social</Link>
+                    </li>
+                    <li>
+                        <Link to="/trending" className="nav-link">Trending</Link>
+                    </li>
+                </ul>
+                <div className="profile" onClick={GoToUserSettings} style={{ cursor: 'pointer' }}>
+                    <CgProfile />
+                    {user ? (
+                        <span>{user.username}</span>
+                    ) : (
+                        <Link to='/logIn' onClick={(e) => e.stopPropagation()}>Sign In</Link>
+                    )}
+                </div>
             </div>
         </nav>
-    )
+    );
 }
 
 export default NavBar;
