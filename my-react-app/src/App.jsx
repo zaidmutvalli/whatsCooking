@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 
 import NavBar from './Components/navigation-bar';
 import AboutRestaurant from './pages/AboutRestraunt';
@@ -13,12 +13,18 @@ import SocialPage from './pages/SocialPage';
 import TrendingPage from './pages/TrendingPage';
 import UserSettings from "./pages/user-settings";
 
+const authRoutes = ['/login', '/signup', '/forgotpassword', '/resetpassword'];
 
+function ConditionalNavBar() {
+  const location = useLocation();
+  if (authRoutes.includes(location.pathname.toLowerCase())) return null;
+  return <NavBar />;
+}
 
 function App() {
   return (
     <Router>
-      <NavBar />
+      <ConditionalNavBar />
       <Routes>
 
         <Route path='/' element={<MainPage />} />

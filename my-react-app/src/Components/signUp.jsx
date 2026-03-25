@@ -1,20 +1,19 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-// Sign up form component — handles new user registration via the backend API
 export default function SignUp(){
 
-    // Form state for all registration fields including password confirmation
     const [formData, setFormData] = useState({
         username: '',
         email: '',
         password: '',
         confirm: ''
     });
+    const [errorMessage, setErrorMessage] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
 
     const navigate = useNavigate();
 
-    // Updates form state when any input field changes
     const handleChange = (e) => {
         setFormData({
             ...formData,
@@ -22,9 +21,10 @@ export default function SignUp(){
         });
     };
 
-    // Submits registration data to the signup endpoint and redirects to login on success
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setErrorMessage('');
+        setSuccessMessage('');
 
         try {
             const response = await fetch("http://localhost:8888/signup.php", {
@@ -38,20 +38,25 @@ export default function SignUp(){
             const result = await response.json();
 
             if (result.status === "success") {
-                alert("Registration Successful!");
-                navigate("/logIn"); // Redirect to login after successful registration
+                setSuccessMessage("Account created! Redirecting to login...");
+                setTimeout(() => navigate("/logIn"), 1500);
             } else {
-                alert(result.message); // Show server-provided error message
+                setErrorMessage(result.message);
             }
         } catch (error) {
-            console.error("Error:", error);
-            alert("An error occurred. Please Try again.");
+            setErrorMessage("An error occurred. Please try again.");
         }
     };
 
     return (
         <div>
             <form onSubmit={handleSubmit}>
+                {errorMessage && (
+                    <div className="error-banner">{errorMessage}</div>
+                )}
+                {successMessage && (
+                    <div className="success-banner">{successMessage}</div>
+                )}
                 <input
                     name="username"
                     type="text"
@@ -60,7 +65,6 @@ export default function SignUp(){
                     value={formData.username}
                     onChange={handleChange}
                 />
-
                 <input
                     name="email"
                     type="email"
@@ -69,7 +73,6 @@ export default function SignUp(){
                     value={formData.email}
                     onChange={handleChange}
                 />
-
                 <input
                     name="password"
                     type="password"
@@ -78,8 +81,6 @@ export default function SignUp(){
                     value={formData.password}
                     onChange={handleChange}
                 />
-
-                {/* Confirmation field to catch password typos before submission */}
                 <input
                     name="confirm"
                     type="password"
@@ -88,9 +89,7 @@ export default function SignUp(){
                     value={formData.confirm}
                     onChange={handleChange}
                 />
-
-                <p>Already a member? <a href="/logIn">Log In here</a></p>
-
+                <p>Already a member? <a href="/logIn">Log in here</a></p>
                 <button type="submit">Sign Up</button>
             </form>
         </div>
