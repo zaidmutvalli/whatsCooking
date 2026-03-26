@@ -1,6 +1,4 @@
 <?php
-$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
-$allowedOrigin = (preg_match('/^http:\/\/localhost:\d+$/', $origin)) ? $origin : '';
 session_start();
 header("Access-Control-Allow-Origin: http://localhost:5173");
 header("Access-Control-Allow-Credentials: true");
@@ -15,24 +13,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 require 'db.php';
 
-// Use session user if logged in, otherwise fall back to test user ID 1
-$user_id = isset($_SESSION['account_id']) ? $_SESSION['account_id'] : 1;
-
+$user_id = $_SESSION['account_id'] ?? 1;
 $data = json_decode(file_get_contents("php://input"), true);
-$restaurant_id   = $data['restaurant_id'] ?? null;
-$restaurant_name = $data['restaurant_name'] ?? null;
 
-if (!$restaurant_id || !$restaurant_name) {
+$rid  = $data['restaurant_id'] ?? null;
+$name = $data['restaurant_name'] ?? null;
+
+if (!$rid || !$name) {
     echo json_encode(["status" => "error", "message" => "Missing data"]);
     exit();
 }
 
+// updates your time time if place is already visited, otherwise insert
 $stmt = $con->prepare("
     INSERT INTO recent_views (user_id, restaurant_id, restaurant_name, viewed_at)
     VALUES (?, ?, ?, NOW())
     ON DUPLICATE KEY UPDATE viewed_at = NOW(), restaurant_name = ?
 ");
-$stmt->bind_param("isss", $user_id, $restaurant_id, $restaurant_name, $restaurant_name);
+$stmt->bind_param("isss", $user_id, $rid, $name, $name);
 $stmt->execute();
 $stmt->close();
 

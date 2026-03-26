@@ -1,6 +1,4 @@
 <?php
-$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
-$allowedOrigin = (preg_match('/^http:\/\/localhost:\d+$/', $origin)) ? $origin : '';
 session_start();
 header("Access-Control-Allow-Origin: http://localhost:5173");
 header("Access-Control-Allow-Credentials: true");
@@ -8,10 +6,9 @@ header("Content-Type: application/json");
 
 require 'db.php';
 
-$user_id = isset($_SESSION['account_id']) ? $_SESSION['account_id'] : 1;
+$user_id = $_SESSION['account_id'] ?? 1;
 $search = isset($_GET['q']) ? '%' . $_GET['q'] . '%' : '%';
 
-// Get all users except current user, with follow status
 $stmt = $con->prepare("
     SELECT u.id, u.username,
            CASE WHEN f.friend_id IS NOT NULL THEN 1 ELSE 0 END as is_following

@@ -28,7 +28,7 @@ export default function TrendingPage() {
 
             try {
                 sessionStorage.setItem(cacheKey, JSON.stringify(sorted));
-            } catch (e) {}
+            } catch {}
 
             setTrending(sorted);
             setLoading(false);
@@ -45,20 +45,18 @@ export default function TrendingPage() {
     }, []);
 
     const getPhotoUrl = (place) => {
-        if (place.photos && place.photos.length > 0) {
+        if (place.photos?.length > 0) {
             return `https://places.googleapis.com/v1/${place.photos[0].name}/media?key=${apiKey}&maxHeightPx=400&maxWidthPx=400`;
         }
         return 'https://via.placeholder.com/300x400?text=No+Image';
     };
 
-    const formatPrice = (priceLevel) => {
-        switch (priceLevel) {
-            case 'PRICE_LEVEL_INEXPENSIVE': return '£';
-            case 'PRICE_LEVEL_MODERATE': return '££';
-            case 'PRICE_LEVEL_EXPENSIVE': return '£££';
-            case 'PRICE_LEVEL_VERY_EXPENSIVE': return '££££';
-            default: return '';
-        }
+    const priceLabel = (level) => {
+        if (level === 'PRICE_LEVEL_INEXPENSIVE') return '£';
+        if (level === 'PRICE_LEVEL_MODERATE') return '££';
+        if (level === 'PRICE_LEVEL_EXPENSIVE') return '£££';
+        if (level === 'PRICE_LEVEL_VERY_EXPENSIVE') return '££££';
+        return '';
     };
 
     return (
@@ -75,11 +73,7 @@ export default function TrendingPage() {
                             <div
                                 key={index}
                                 onClick={() => navigate('/about', { state: { place } })}
-                                style={{
-                                    background: 'white', borderRadius: '14px', overflow: 'hidden',
-                                    boxShadow: '0 3px 14px rgba(0,0,0,0.08)', cursor: 'pointer',
-                                    transition: 'transform 0.2s, box-shadow 0.2s',
-                                }}
+                                style={{ background: 'white', borderRadius: '14px', overflow: 'hidden', boxShadow: '0 3px 14px rgba(0,0,0,0.08)', cursor: 'pointer', transition: 'transform 0.2s, box-shadow 0.2s' }}
                                 onMouseOver={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.13)'; }}
                                 onMouseOut={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 3px 14px rgba(0,0,0,0.08)'; }}
                             >
@@ -91,22 +85,10 @@ export default function TrendingPage() {
                                         style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                                         onError={(e) => { e.target.src = 'https://via.placeholder.com/300x400'; }}
                                     />
-                                    <span style={{
-                                        position: 'absolute', top: '10px', left: '10px',
-                                        background: '#162167', color: 'white',
-                                        padding: '4px 10px', borderRadius: '20px',
-                                        fontWeight: 'bold', fontSize: '13px',
-                                        fontFamily: 'Arial, Helvetica, sans-serif'
-                                    }}>
+                                    <span style={{ position: 'absolute', top: '10px', left: '10px', background: '#162167', color: 'white', padding: '4px 10px', borderRadius: '20px', fontWeight: 'bold', fontSize: '13px' }}>
                                         #{index + 1}
                                     </span>
-                                    <span style={{
-                                        position: 'absolute', bottom: '10px', right: '10px',
-                                        background: 'white', padding: '3px 8px', borderRadius: '20px',
-                                        fontWeight: 'bold', fontSize: '12px',
-                                        boxShadow: '0 2px 4px rgba(0,0,0,0.18)',
-                                        fontFamily: 'Arial, Helvetica, sans-serif'
-                                    }}>
+                                    <span style={{ position: 'absolute', bottom: '10px', right: '10px', background: 'white', padding: '3px 8px', borderRadius: '20px', fontWeight: 'bold', fontSize: '12px', boxShadow: '0 2px 4px rgba(0,0,0,0.18)' }}>
                                         ⭐ {place.rating} ({place.userRatingCount || 0})
                                     </span>
                                 </div>
@@ -115,7 +97,7 @@ export default function TrendingPage() {
                                         {place.displayName?.text}
                                     </h4>
                                     <p style={{ margin: 0, fontSize: '12px', color: '#999' }}>
-                                        {formatPrice(place.priceLevel)} • {place.rating >= 4.5 ? 'Highly Rated' : 'Popular'}
+                                        {priceLabel(place.priceLevel)} • {place.rating >= 4.5 ? 'Highly Rated' : 'Popular'}
                                     </p>
                                 </div>
                             </div>
