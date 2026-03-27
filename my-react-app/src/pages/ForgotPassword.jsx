@@ -1,14 +1,21 @@
 import React from 'react';
 import ForgotPassword from '../Components/forgotPassword';
+import chefLogo from '../assets/chefLogo.webp';
 
 import "../styles/forgotPassword.css";
 
 export default function ForgotPasswordPage() {
 
   return (
-    <div id="wrapper">
-      <h2>Forgot Password</h2>
-      <ForgotPassword />
+    <div className="auth-page">
+      <div className="auth-branding">
+        <img src={chefLogo} alt="WhatsCooking logo" className="auth-logo" />
+        <span className="auth-brand-name">WhatsCooking</span>
+      </div>
+      <div id="wrapper">
+        <h2>Forgot Password</h2>
+        <ForgotPassword />
+      </div>
     </div>
   );
 }

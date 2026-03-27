@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 
 import NavBar from './Components/navigation-bar';
 import AboutRestaurant from './pages/AboutRestraunt';
@@ -12,13 +12,20 @@ import PlacesPage from './pages/PlacesPage';
 import SocialPage from './pages/SocialPage';
 import TrendingPage from './pages/TrendingPage';
 import UserSettings from "./pages/user-settings";
+import PublicProfile from "./pages/PublicProfile";
 
+const authRoutes = ['/login', '/signup', '/forgotpassword', '/resetpassword'];
 
+function ConditionalNavBar() {
+  const location = useLocation();
+  if (authRoutes.includes(location.pathname.toLowerCase())) return null;
+  return <NavBar />;
+}
 
 function App() {
   return (
     <Router>
-      <NavBar />
+      <ConditionalNavBar />
       <Routes>
 
         <Route path='/' element={<MainPage />} />
@@ -31,7 +38,8 @@ function App() {
         <Route path='/places' element={<PlacesPage />} />
         <Route path='/social' element={<SocialPage />} />
         <Route path='/trending' element={<TrendingPage />} />
-        <Route path="/user-settings" element={<UserSettings />} /> 
+        <Route path="/user-settings" element={<UserSettings />} />
+        <Route path="/profile/:userId" element={<PublicProfile />} /> 
 
       </Routes>
     </Router>

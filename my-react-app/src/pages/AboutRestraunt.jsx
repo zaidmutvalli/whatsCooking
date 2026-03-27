@@ -65,6 +65,7 @@ export default function AboutRestaurant() {
         </div>
       </div>
 
+
       <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 24px 24px 24px' }}>
         {photoCount === 1 ? (
           <div style={{ borderRadius: '16px', overflow: 'hidden', background: '#111', maxHeight: '420px', display: 'flex', justifyContent: 'center', cursor: 'pointer' }} onClick={() => setLightbox(0)}>
