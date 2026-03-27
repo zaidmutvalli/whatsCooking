@@ -69,10 +69,9 @@ export default function AboutRestaurant() {
         </div>
       </div>
 
-      
+
       <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 24px 24px 24px' }}>
         {photoCount === 1 ? (
-          
           <div style={{ borderRadius: '16px', overflow: 'hidden', background: '#111', maxHeight: '420px', display: 'flex', justifyContent: 'center', cursor: 'pointer' }} onClick={() => setLightbox(0)}>
             <img src={getPhotoUrl(0, 1200)} alt="" style={{ maxHeight: '420px', maxWidth: '100%', objectFit: 'contain', display: 'block' }} />
           </div>
@@ -87,9 +86,7 @@ export default function AboutRestaurant() {
             ))}
           </div>
         ) : (
-          
           <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: '8px', height: '400px', borderRadius: '16px', overflow: 'hidden' }}>
-            
             <div style={{ overflow: 'hidden', cursor: 'pointer' }} onClick={() => setLightbox(0)}>
               <img src={getPhotoUrl(0, 1200)} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transition: 'transform 0.2s' }}
                 onMouseOver={e => e.target.style.transform = 'scale(1.03)'}
