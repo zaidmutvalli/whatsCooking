@@ -1,4 +1,6 @@
 <?php
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+$allowedOrigin = (preg_match('/^http:\/\/localhost:\d+$/', $origin)) ? $origin : '';
 session_start();
 header("Access-Control-Allow-Origin: $allowedOrigin");
 header("Access-Control-Allow-Credentials: true");
