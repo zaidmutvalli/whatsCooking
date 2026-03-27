@@ -1,7 +1,6 @@
 import "../index.css";
 import "../styles/nav-bar.css";
 
-
 import { Link, useNavigate } from "react-router-dom";
 import chefImage from "../assets/chefLogo.webp";
 import { CgProfile } from "react-icons/cg";
@@ -10,7 +9,6 @@ import { useState, useEffect } from 'react';
 function NavBar() {
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
-    const [username, setUsername] = useState('JoshA_380');
 
     useEffect(() => {
         fetch("http://localhost:8888/get_user_info.php", {
@@ -23,16 +21,7 @@ function NavBar() {
             }
         });
     }, []);
-    useEffect(() => {
-        const handleStorageChange = () => {
-            const savedUsername = localStorage.getItem('username');
-            if (savedUsername) {
-                setUsername(savedUsername);
-            }
-        };
-          window.addEventListener('storage', handleStorageChange);
-        return () => window.removeEventListener('storage', handleStorageChange);
-    }, []);
+
 const GoToUserSettings = () => {
         navigate('/user-settings'); 
     };
@@ -49,10 +38,6 @@ const GoToUserSettings = () => {
                 <Link to="/" className="nav-brand"><h1>WhatsCooking</h1></Link>
             </div>
             <div className="rightSection">
-
-
-
-
 
                 <ul className="menu">
                     <li>

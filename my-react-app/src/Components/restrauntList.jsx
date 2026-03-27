@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { fetchRestaurants, searchRestaurantsByText } from '../restaurantService';
 import { useNavigate } from 'react-router-dom';
-import '../styles/RestaurantList.css'; 
+import '../styles/RestaurantList.css';
 
 const CUISINE_MAP = {
   'italian': 'italian restaurant', 'pizza': 'pizza restaurant', 'pasta': 'italian restaurant',
@@ -9,11 +9,10 @@ const CUISINE_MAP = {
   'japanese': 'japanese restaurant', 'sushi': 'sushi restaurant', 'ramen': 'ramen restaurant',
   'thai': 'thai restaurant', 'mexican': 'mexican restaurant', 'tacos': 'mexican restaurant',
   'american': 'american restaurant', 'burger': 'burger restaurant', 'burgers': 'burger restaurant',
-  'turkish': 'turkish restaurant', 'kebab': 'turkish restaurant', 'greek': 'greek restaurant',
-  'french': 'french restaurant', 'spanish': 'spanish restaurant', 'tapas': 'tapas restaurant',
+  'turkish': 'turkish restaurant', 'kebab': 'turkish restaurant',
+  'greek': 'greek restaurant', 'french': 'french restaurant', 'spanish': 'spanish restaurant', 'tapas': 'tapas restaurant',
   'korean': 'korean restaurant', 'vietnamese': 'vietnamese restaurant', 'pho': 'vietnamese restaurant',
-  'lebanese': 'lebanese restaurant', 'moroccan': 'moroccan restaurant',
-  'persian': 'persian restaurant', 'pakistani': 'pakistani restaurant',
+  'lebanese': 'lebanese restaurant', 'moroccan': 'moroccan restaurant', 'persian': 'persian restaurant', 'pakistani': 'pakistani restaurant',
   'steak': 'steakhouse', 'seafood': 'seafood restaurant', 'fish': 'fish restaurant',
   'noodles': 'noodle restaurant', 'dumpling': 'dumpling restaurant', 'dim sum': 'dim sum restaurant',
   'brunch': 'brunch restaurant', 'breakfast': 'breakfast restaurant', 'pancakes': 'breakfast cafe',
@@ -71,8 +70,8 @@ const getTopTabInterest = () => {
 
 const PRICE_LABEL = {
   'PRICE_LEVEL_INEXPENSIVE': { label: 'budget-friendly', search: 'cheap eats restaurant' },
-  'PRICE_LEVEL_MODERATE':    { label: 'mid-range',       search: 'casual dining restaurant' },
-  'PRICE_LEVEL_EXPENSIVE':   { label: 'upscale dining',  search: 'fine dining restaurant' },
+  'PRICE_LEVEL_MODERATE': { label: 'mid-range', search: 'casual dining restaurant' },
+  'PRICE_LEVEL_EXPENSIVE': { label: 'upscale dining', search: 'fine dining restaurant' },
   'PRICE_LEVEL_VERY_EXPENSIVE': { label: 'luxury dining', search: 'luxury restaurant' },
 };
 
@@ -203,8 +202,8 @@ const RestaurantList = () => {
       const data = await res.json();
       if (data.status === "success" && data.recent_view) {
         setRecentViewName(data.recent_view);
-        const similarPlaces = await searchRestaurantsByText(`places similar to ${data.recent_view}`, lat, lng);
-        setRecommendedPlaces(similarPlaces.filter(p => p.displayName?.text !== data.recent_view));
+        const similar = await searchRestaurantsByText(`places similar to ${data.recent_view}`, lat, lng);
+        setRecommendedPlaces(similar.filter(p => p.displayName?.text !== data.recent_view));
       }
     } catch (error) {
       console.error("Failed to load recommendations", error);
@@ -331,14 +330,12 @@ const RestaurantList = () => {
     return "https://via.placeholder.com/300x400?text=No+Image";
   };
 
-  const formatPrice = (priceLevel) => {
-    switch (priceLevel) {
-      case 'PRICE_LEVEL_INEXPENSIVE': return '£';
-      case 'PRICE_LEVEL_MODERATE': return '££';
-      case 'PRICE_LEVEL_EXPENSIVE': return '£££';
-      case 'PRICE_LEVEL_VERY_EXPENSIVE': return '££££';
-      default: return '';
-    }
+  const formatPrice = (level) => {
+    if (level === 'PRICE_LEVEL_INEXPENSIVE') return '£';
+    if (level === 'PRICE_LEVEL_MODERATE') return '££';
+    if (level === 'PRICE_LEVEL_EXPENSIVE') return '£££';
+    if (level === 'PRICE_LEVEL_VERY_EXPENSIVE') return '££££';
+    return '';
   };
 
   const filteredRestaurants = restaurants.filter(p => {

@@ -10,7 +10,7 @@ export default function AboutRestaurant() {
   const { state } = useLocation();
   const place = state?.place;
   const navigate = useNavigate();
-  const [lightbox, setLightbox] = useState(null); 
+  const [lightbox, setLightbox] = useState(null);
 
   if (!place) {
     return (
@@ -28,13 +28,11 @@ export default function AboutRestaurant() {
   };
 
   const formatPrice = (p) => {
-    switch (p) {
-      case 'PRICE_LEVEL_INEXPENSIVE': return '£ · Budget Friendly';
-      case 'PRICE_LEVEL_MODERATE': return '££ · Mid-range';
-      case 'PRICE_LEVEL_EXPENSIVE': return '£££ · Upscale';
-      case 'PRICE_LEVEL_VERY_EXPENSIVE': return '££££ · Fine Dining';
-      default: return '';
-    }
+    if (p === 'PRICE_LEVEL_INEXPENSIVE') return '£ · Budget Friendly';
+    if (p === 'PRICE_LEVEL_MODERATE') return '££ · Mid-range';
+    if (p === 'PRICE_LEVEL_EXPENSIVE') return '£££ · Upscale';
+    if (p === 'PRICE_LEVEL_VERY_EXPENSIVE') return '££££ · Fine Dining';
+    return '';
   };
 
   const photoCount = Math.min(place.photos?.length || 1, 5);
@@ -42,7 +40,6 @@ export default function AboutRestaurant() {
   return (
     <div style={{ paddingTop: '68px', fontFamily: 'Arial, Helvetica, sans-serif', background: '#f9f9f9', minHeight: '100vh' }}>
 
-      {/* Back button */}
       <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '12px 24px 0 24px' }}>
         <button onClick={() => navigate(-1)} style={{
           background: 'none', border: 'none', cursor: 'pointer', color: '#162167',
@@ -50,7 +47,6 @@ export default function AboutRestaurant() {
         }}>← Back</button>
       </div>
 
-      {/* Restaurant name & rating above photos */}
       <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '12px 24px 12px 24px' }}>
         <h1 style={{ margin: '0 0 8px 0', fontSize: '1.7rem', fontWeight: 'bold', color: '#1a1a1a' }}>
           {place.displayName?.text}
@@ -92,7 +88,6 @@ export default function AboutRestaurant() {
                 onMouseOver={e => e.target.style.transform = 'scale(1.03)'}
                 onMouseOut={e => e.target.style.transform = 'scale(1)'} />
             </div>
-            {/* Right grid */}
             <div style={{ display: 'grid', gridTemplateRows: photoCount >= 4 ? '1fr 1fr' : '1fr', gap: '8px' }}>
               {photoCount >= 4 ? (
                 <>
@@ -125,13 +120,11 @@ export default function AboutRestaurant() {
         )}
       </div>
 
-      {/* LIGHTBOX */}
       {lightbox !== null && (
         <div onClick={() => setLightbox(null)} style={{
           position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.92)', zIndex: 9999,
           display: 'flex', alignItems: 'center', justifyContent: 'center'
         }}>
-          <button onClick={() => setLightbox(null)} style={{ position: 'absolute', top: '16px', right: '20px', background: 'none', border: 'none', color: 'white', fontSize: '28px', cursor: 'pointer' }}>✕</button>
           {lightbox > 0 && (
             <button onClick={(e) => { e.stopPropagation(); setLightbox(l => l - 1); }} style={{ position: 'absolute', left: '16px', background: 'rgba(255,255,255,0.15)', border: 'none', color: 'white', fontSize: '24px', padding: '10px 16px', borderRadius: '50%', cursor: 'pointer' }}>‹</button>
           )}
@@ -143,18 +136,15 @@ export default function AboutRestaurant() {
         </div>
       )}
 
-      {/* MAIN CONTENT */}
       <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 24px 60px 24px' }}>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: '24px', alignItems: 'start' }}>
 
-          {/* LEFT */}
           <div>
             <div style={{ background: 'white', borderRadius: '16px', padding: '24px', boxShadow: '0 2px 12px rgba(0,0,0,0.07)', marginBottom: '20px' }}>
               <h3 style={{ margin: '0 0 16px 0', fontSize: '1rem', fontWeight: 'bold', paddingBottom: '10px', borderBottom: '1px solid #f0f0f0' }}>About</h3>
               {place.editorialSummary?.text && <p style={{ fontSize: '14px', color: '#555', lineHeight: 1.6, marginBottom: '16px' }}>{place.editorialSummary.text}</p>}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
-                  
                   <div>
                     <p style={{ fontSize: '11px', color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 2px 0' }}>Address</p>
                     <p style={{ fontSize: '14px', color: '#444', margin: 0 }}>{place.formattedAddress}</p>
@@ -162,7 +152,6 @@ export default function AboutRestaurant() {
                 </div>
                 {place.priceLevel && (
                   <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
-                    
                     <div>
                       <p style={{ fontSize: '11px', color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 2px 0' }}>Price</p>
                       <p style={{ fontSize: '14px', color: '#444', margin: 0 }}>{formatPrice(place.priceLevel)}</p>
@@ -171,7 +160,6 @@ export default function AboutRestaurant() {
                 )}
                 {place.rating && (
                   <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
-                    
                     <div>
                       <p style={{ fontSize: '11px', color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 2px 0' }}>Rating</p>
                       <p style={{ fontSize: '14px', color: '#444', margin: 0 }}>{place.rating} out of 5 · {place.userRatingCount?.toLocaleString()} reviews</p>
@@ -179,13 +167,10 @@ export default function AboutRestaurant() {
                   </div>
                 )}
 
-                {/* Opening Hours */}
                 {place.currentOpeningHours?.weekdayDescriptions && (
                   <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
-                    
                     <div style={{ flex: 1 }}>
                       <p style={{ fontSize: '11px', color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 6px 0' }}>Opening Hours</p>
-                      {/* Open/Closed badge */}
                       {place.currentOpeningHours?.openNow !== undefined && (
                         <span style={{
                           display: 'inline-block', marginBottom: '8px',
@@ -210,10 +195,8 @@ export default function AboutRestaurant() {
                   </div>
                 )}
 
-                {/* Phone & Website */}
                 {place.nationalPhoneNumber && (
                   <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                    
                     <div>
                       <p style={{ fontSize: '11px', color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 2px 0' }}>Phone</p>
                       <a href={`tel:${place.nationalPhoneNumber}`} style={{ fontSize: '14px', color: '#162167', textDecoration: 'none' }}>{place.nationalPhoneNumber}</a>
@@ -222,7 +205,6 @@ export default function AboutRestaurant() {
                 )}
                 {place.websiteUri && (
                   <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                    
                     <div>
                       <p style={{ fontSize: '11px', color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 2px 0' }}>Website</p>
                       <a href={place.websiteUri} target="_blank" rel="noreferrer" style={{ fontSize: '14px', color: '#162167', textDecoration: 'none' }}>Visit website ↗</a>
@@ -238,7 +220,6 @@ export default function AboutRestaurant() {
             </div>
           </div>
 
-          {/* RIGHT */}
           <div style={{ position: 'sticky', top: '80px' }}>
             <div style={{ background: 'white', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 2px 12px rgba(0,0,0,0.07)', marginBottom: '16px' }}>
               <div style={{ height: '220px' }}>
@@ -255,12 +236,15 @@ export default function AboutRestaurant() {
               onMouseOver={e => e.target.style.background = '#0e103c'}
               onMouseOut={e => e.target.style.background = '#162167'}
             >Write a Review</button>
-            <a
+            
+              <a
               href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(place.formattedAddress)}`}
-              target="_blank" rel="noreferrer"
+              target="_blank"
+              rel="noreferrer"
               style={{ display: 'block', width: '100%', padding: '13px', background: 'white', color: '#162167', border: '2px solid #162167', borderRadius: '12px', fontWeight: 'bold', fontSize: '15px', cursor: 'pointer', fontFamily: 'Arial, Helvetica, sans-serif', textAlign: 'center', textDecoration: 'none', boxSizing: 'border-box' }}
             >Get Directions</a>
           </div>
+
         </div>
       </div>
     </div>

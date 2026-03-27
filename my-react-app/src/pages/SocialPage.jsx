@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import '../styles/reviewPage.css';
+
+const userCache = {};
 
 const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY || import.meta.env.VITE_GOOGLE_API_KEY;
 
@@ -49,10 +51,17 @@ export default function SocialPage() {
     };
 
     const loadUsers = async (q) => {
+        if (userCache[q]) {
+            setUsers(userCache[q]);
+            return;
+        }
         try {
             const res = await fetch(`http://localhost:8888/get_users.php?q=${q}`, { credentials: 'include' });
             const data = await res.json();
-            if (data.status === 'success') setUsers(data.users);
+            if (data.status === 'success') {
+                userCache[q] = data.users;
+                setUsers(data.users);
+            }
         } catch {}
     };
 
@@ -212,7 +221,6 @@ export default function SocialPage() {
                 <button style={s.tab(activeTab === 'people')} onClick={() => setActiveTab('people')}>Find People</button>
             </div>
 
-            {/* FEED */}
             {activeTab === 'feed' && (
                 <>
                     {loading ? (

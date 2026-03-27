@@ -1,6 +1,4 @@
 <?php
-$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
-$allowedOrigin = (preg_match('/^http:\/\/localhost:\d+$/', $origin)) ? $origin : '';
 session_start();
 header("Access-Control-Allow-Origin: $allowedOrigin");
 header("Access-Control-Allow-Credentials: true");
@@ -8,13 +6,13 @@ header("Content-Type: application/json");
 
 require 'db.php';
 
-$user_id = isset($_SESSION['account_id']) ? $_SESSION['account_id'] : 1;
+$user_id = $_SESSION['account_id'] ?? 1;
 
-// Get IDs of people this user follows
 $stmt = $con->prepare("SELECT friend_id FROM friendships WHERE user_id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
+
 $friend_ids = [];
 while ($row = $result->fetch_assoc()) {
     $friend_ids[] = $row['friend_id'];
@@ -51,7 +49,6 @@ $stmt->execute();
 $reviews = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
 
-// Get friends' visited places
 $stmt = $con->prepare("
     SELECT rv.restaurant_name, rv.restaurant_id, rv.viewed_at,
            u.username, u.id AS user_id
